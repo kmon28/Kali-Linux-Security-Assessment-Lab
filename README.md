@@ -6,7 +6,7 @@
 ![Nmap](https://img.shields.io/badge/Tool-Nmap-1679A7?style=flat-square)
 ![Active Directory](https://img.shields.io/badge/Target-Active_Directory-4B5563?style=flat-square)
 ![Windows Event Logs](https://img.shields.io/badge/Detection-Event_4625-2874A6?style=flat-square)
-![Evidence](https://img.shields.io/badge/Evidence-10_Screenshots-218838?style=flat-square)
+![Evidence](https://img.shields.io/badge/Evidence-23_Screenshots-218838?style=flat-square)
 ![Status](https://img.shields.io/badge/Project-Documented-218838?style=flat-square)
 
 **Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md)
@@ -120,6 +120,20 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 - **[Assessment findings report](reports/assessment-findings.md):** findings matrix, risk interpretation, correlation, and next validation steps.
 - **[Command reference and interview refresher](commands/command-reference.md):** observed commands vs reproducible examples, protocol concepts, Windows event interpretation, and self-test questions.
 - **[Lab scope and topology](docs/lab-scope-and-topology.md):** network architecture, chronological evidence, and what cannot be concluded from the screenshots.
+
+
+## Kerberos Service Ticket Investigation — RC4 to AES-256
+
+**Completed October 17, 2026.** Extended the authorized Windows/AD assessment with Kerberos service-account configuration, Event ID 4769 auditing, legacy-encryption identification, and an AES-256 hardening retest.
+
+- **Before:** 9:20:12 PM, `svc-kerberos-lab` service ticket issued using **RC4 (`0x17`)**, success `0x0`.
+- **After:** account configured with supported encryption types **24 decimal (`0x18`, AES-128 + AES-256)**; fresh ticket requested; 10:16:40 PM Event 4769 showed **AES-256 (`0x12`)**, success `0x0`.
+- **Disposition:** scoped legacy-encryption hardening validation, **not** evidence of a Kerberoasting attack or compromise. Local client address `::1`.
+- **Tooling:** Windows Security Event Logs, Active Directory PowerShell, and `klist`; **no active Splunk access** (earlier trial expired).
+
+**[Read the complete Kerberos investigation report](reports/IR-002-kerberos-rc4-aes256-hardening.md)** · [RC4 investigation screenshot 22](screenshots/22-Kerberos-RC4-Investigation.png) · [AES-256 verification screenshot 23](screenshots/23-Kerberos-AES256-Final-Verification.png)
+
+The evidence set now contains **23 numbered screenshots**, with screenshots 11–23 covering Kerberos setup, auditing, event investigation, and encryption verification. See the full [screenshots directory](screenshots/).
 
 ## Engineering Takeaways
 
