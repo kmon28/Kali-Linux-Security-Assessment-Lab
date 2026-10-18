@@ -9,7 +9,7 @@
 ![Evidence](https://img.shields.io/badge/Evidence-23_Screenshots-218838?style=flat-square)
 ![Status](https://img.shields.io/badge/Project-Documented-218838?style=flat-square)
 
-**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md)
+**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md)
 
 ## Executive Summary
 
@@ -131,7 +131,7 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 - **Disposition:** scoped legacy-encryption hardening validation, **not** evidence of a Kerberoasting attack or compromise. Local client address `::1`.
 - **Tooling:** Windows Security Event Logs, Active Directory PowerShell, and `klist`; **no active Splunk access** (earlier trial expired).
 
-**[Read the complete Kerberos investigation report](reports/IR-002-kerberos-rc4-aes256-hardening.md)** · [RC4 investigation screenshot 22](screenshots/22-Kerberos-RC4-Investigation.png) · [AES-256 verification screenshot 23](screenshots/23-Kerberos-AES256-Final-Verification.png)
+**[Read the complete Kerberos investigation report](reports/IR-002-kerberos-rc4-aes256-hardening.md)** · [Command reference](commands/kerberos-command-reference.md) · [Detection engineering and MITRE mapping](docs/kerberos-detection-engineering.md) · [Evidence index (11–23)](docs/kerberos-evidence-index.md) · [RC4 investigation screenshot 22](screenshots/22-Kerberos-RC4-Investigation.png) · [AES-256 verification screenshot 23](screenshots/23-Kerberos-AES256-Final-Verification.png)
 
 The evidence set now contains **23 numbered screenshots**, with screenshots 11–23 covering Kerberos setup, auditing, event investigation, and encryption verification. See the full [screenshots directory](screenshots/).
 
