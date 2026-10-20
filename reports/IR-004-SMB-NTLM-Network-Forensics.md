@@ -38,6 +38,150 @@ Packet 41: SMB2 Session Setup response `STATUS_SUCCESS (0x00000000)`. The server
 ### F-04 — NTLM challenge-response observed
 Packet 39 contains `NTLMSSP_AUTH (3)`, domain `LAB`, account `socuser`, workstation `KALI`, and an NTLM response field. The response is credential-derived, not a plaintext password. Presence of an NTLMSSP response is **not** evidence that the password was disclosed. Client-advertised SMB signing support does not prove signing was required or used for every message.
 
+## Visual evidence and analyst interpretation
+
+### Screenshot 28 — TCP three-way handshake
+
+![TCP three-way handshake](../screenshots/28-TCP-Three-Way-Handshake.png)
+
+Packets 10–12 establish transport connectivity on TCP/445. This does not itself prove successful authentication.
+
+### Screenshot 29 — Rejected SMB2 session setup
+
+![SMB2 authentication failure](../screenshots/29-SMB2-Authentication-Failure.png)
+
+Packet 23 is a server response with `STATUS_LOGON_FAILURE`; in this controlled test the operator intentionally entered an incorrect password.
+
+### Screenshot 30 — Accepted SMB2 session setup
+
+![SMB2 authentication success](../screenshots/30-SMB2-Authentication-Success.png)
+
+Packet 41 reports `STATUS_SUCCESS`. The associated `smbclient` output listed `ADMIN# IR-004 | SMB/NTLM Network Authentication Forensics
+
+**Environment:** isolated VirtualBox lab · **Source:** Kali Linux `192.168.56.105` · **Target:** DC02 `192.168.56.101` · **Protocol:** TCP/445, SMB2, NTLMSSP · **Classification:** authorized simulation, not a production incident.
+
+## Executive summary
+Investigated a controlled SMB authentication sequence using Wireshark packet evidence. Identified the TCP three-way handshake, SMB session setup, an unsuccessful authentication response, and a subsequent successful session setup. Examined an NTLMSSP AUTH message identifying domain `LAB` and user `socuser`. The exercise demonstrates packet-level identity troubleshooting, evidence interpretation, and security-aware reporting.
+
+**Observed outcome:** server response packet **23** reported `STATUS_LOGON_FAILURE (0xC000006D)`; server response packet **41** reported `STATUS_SUCCESS (0x00000000)`. The latter confirms successful SMB session setup, **not** administrator access, file access, lateral movement, or compromise.
+
+## Scope and evidence standard
+This report documents observations from screenshots 28–31 and the lab walkthrough. The raw `.pcapng` remains private because NTLM challenge-response and session-key-related fields can expose credential-derived material. No production system was targeted. Packet timestamps and exact Windows event correlation were not independently established from the raw capture.
+
+## Investigation timeline
+
+| Packet(s) | Direction | Evidence | Interpretation |
+|---|---|---|---|
+| 10 | Kali → DC02 | TCP SYN | Connection initiation |
+| 11 | DC02 → Kali | TCP SYN, ACK | Server acknowledges SYN |
+| 12 | Kali → DC02 | TCP ACK | Three-way handshake completes |
+| 13–17 | Both | SMB negotiation | SMB protocol negotiation observed |
+| 18–23 | Both | SMB2 Session Setup | Authentication exchange; packet 23 rejects logon |
+| 36–41 | Both | SMB2 Session Setup | Subsequent authentication exchange; packet 41 succeeds |
+| 39 | Kali → DC02 | `NTLMSSP_AUTH (3)` | NTLM authentication response, domain LAB / account socuser |
+
+The sequence above is a packet-order narrative, not a verified wall-clock timeline.
+
+## Findings and analysis
+
+### F-01 — Network session established
+TCP SYN, SYN-ACK, ACK in packets 10–12 demonstrate a completed transport handshake to SMB TCP/445. A successful TCP handshake alone does not establish SMB authentication.
+
+### F-02 — Failed SMB authentication
+Packet 23: SMB2 Session Setup response `STATUS_LOGON_FAILURE (0xC000006D)`. The server rejected the login. This status alone does not establish whether the cause was a wrong password, disabled account, or another authentication condition. Correlate with DC02 Windows Security Event 4625 and substatus to distinguish causes.
+
+### F-03 — Successful SMB session setup
+Packet 41: SMB2 Session Setup response `STATUS_SUCCESS (0x00000000)`. The server accepted the session setup. This is distinct from proof of accessing a share, reading data, or gaining privileged rights.
+
+### F-04 — NTLM challenge-response observed
+Packet 39 contains `NTLMSSP_AUTH (3)`, domain `LAB`, account `socuser`, workstation `KALI`, and an NTLM response field. The response is credential-derived, not a plaintext password. Presence of an NTLMSSP response is **not** evidence that the password was disclosed. Client-advertised SMB signing support does not prove signing was required or used for every message.
+
+, `C# IR-004 | SMB/NTLM Network Authentication Forensics
+
+**Environment:** isolated VirtualBox lab · **Source:** Kali Linux `192.168.56.105` · **Target:** DC02 `192.168.56.101` · **Protocol:** TCP/445, SMB2, NTLMSSP · **Classification:** authorized simulation, not a production incident.
+
+## Executive summary
+Investigated a controlled SMB authentication sequence using Wireshark packet evidence. Identified the TCP three-way handshake, SMB session setup, an unsuccessful authentication response, and a subsequent successful session setup. Examined an NTLMSSP AUTH message identifying domain `LAB` and user `socuser`. The exercise demonstrates packet-level identity troubleshooting, evidence interpretation, and security-aware reporting.
+
+**Observed outcome:** server response packet **23** reported `STATUS_LOGON_FAILURE (0xC000006D)`; server response packet **41** reported `STATUS_SUCCESS (0x00000000)`. The latter confirms successful SMB session setup, **not** administrator access, file access, lateral movement, or compromise.
+
+## Scope and evidence standard
+This report documents observations from screenshots 28–31 and the lab walkthrough. The raw `.pcapng` remains private because NTLM challenge-response and session-key-related fields can expose credential-derived material. No production system was targeted. Packet timestamps and exact Windows event correlation were not independently established from the raw capture.
+
+## Investigation timeline
+
+| Packet(s) | Direction | Evidence | Interpretation |
+|---|---|---|---|
+| 10 | Kali → DC02 | TCP SYN | Connection initiation |
+| 11 | DC02 → Kali | TCP SYN, ACK | Server acknowledges SYN |
+| 12 | Kali → DC02 | TCP ACK | Three-way handshake completes |
+| 13–17 | Both | SMB negotiation | SMB protocol negotiation observed |
+| 18–23 | Both | SMB2 Session Setup | Authentication exchange; packet 23 rejects logon |
+| 36–41 | Both | SMB2 Session Setup | Subsequent authentication exchange; packet 41 succeeds |
+| 39 | Kali → DC02 | `NTLMSSP_AUTH (3)` | NTLM authentication response, domain LAB / account socuser |
+
+The sequence above is a packet-order narrative, not a verified wall-clock timeline.
+
+## Findings and analysis
+
+### F-01 — Network session established
+TCP SYN, SYN-ACK, ACK in packets 10–12 demonstrate a completed transport handshake to SMB TCP/445. A successful TCP handshake alone does not establish SMB authentication.
+
+### F-02 — Failed SMB authentication
+Packet 23: SMB2 Session Setup response `STATUS_LOGON_FAILURE (0xC000006D)`. The server rejected the login. This status alone does not establish whether the cause was a wrong password, disabled account, or another authentication condition. Correlate with DC02 Windows Security Event 4625 and substatus to distinguish causes.
+
+### F-03 — Successful SMB session setup
+Packet 41: SMB2 Session Setup response `STATUS_SUCCESS (0x00000000)`. The server accepted the session setup. This is distinct from proof of accessing a share, reading data, or gaining privileged rights.
+
+### F-04 — NTLM challenge-response observed
+Packet 39 contains `NTLMSSP_AUTH (3)`, domain `LAB`, account `socuser`, workstation `KALI`, and an NTLM response field. The response is credential-derived, not a plaintext password. Presence of an NTLMSSP response is **not** evidence that the password was disclosed. Client-advertised SMB signing support does not prove signing was required or used for every message.
+
+, `IPC# IR-004 | SMB/NTLM Network Authentication Forensics
+
+**Environment:** isolated VirtualBox lab · **Source:** Kali Linux `192.168.56.105` · **Target:** DC02 `192.168.56.101` · **Protocol:** TCP/445, SMB2, NTLMSSP · **Classification:** authorized simulation, not a production incident.
+
+## Executive summary
+Investigated a controlled SMB authentication sequence using Wireshark packet evidence. Identified the TCP three-way handshake, SMB session setup, an unsuccessful authentication response, and a subsequent successful session setup. Examined an NTLMSSP AUTH message identifying domain `LAB` and user `socuser`. The exercise demonstrates packet-level identity troubleshooting, evidence interpretation, and security-aware reporting.
+
+**Observed outcome:** server response packet **23** reported `STATUS_LOGON_FAILURE (0xC000006D)`; server response packet **41** reported `STATUS_SUCCESS (0x00000000)`. The latter confirms successful SMB session setup, **not** administrator access, file access, lateral movement, or compromise.
+
+## Scope and evidence standard
+This report documents observations from screenshots 28–31 and the lab walkthrough. The raw `.pcapng` remains private because NTLM challenge-response and session-key-related fields can expose credential-derived material. No production system was targeted. Packet timestamps and exact Windows event correlation were not independently established from the raw capture.
+
+## Investigation timeline
+
+| Packet(s) | Direction | Evidence | Interpretation |
+|---|---|---|---|
+| 10 | Kali → DC02 | TCP SYN | Connection initiation |
+| 11 | DC02 → Kali | TCP SYN, ACK | Server acknowledges SYN |
+| 12 | Kali → DC02 | TCP ACK | Three-way handshake completes |
+| 13–17 | Both | SMB negotiation | SMB protocol negotiation observed |
+| 18–23 | Both | SMB2 Session Setup | Authentication exchange; packet 23 rejects logon |
+| 36–41 | Both | SMB2 Session Setup | Subsequent authentication exchange; packet 41 succeeds |
+| 39 | Kali → DC02 | `NTLMSSP_AUTH (3)` | NTLM authentication response, domain LAB / account socuser |
+
+The sequence above is a packet-order narrative, not a verified wall-clock timeline.
+
+## Findings and analysis
+
+### F-01 — Network session established
+TCP SYN, SYN-ACK, ACK in packets 10–12 demonstrate a completed transport handshake to SMB TCP/445. A successful TCP handshake alone does not establish SMB authentication.
+
+### F-02 — Failed SMB authentication
+Packet 23: SMB2 Session Setup response `STATUS_LOGON_FAILURE (0xC000006D)`. The server rejected the login. This status alone does not establish whether the cause was a wrong password, disabled account, or another authentication condition. Correlate with DC02 Windows Security Event 4625 and substatus to distinguish causes.
+
+### F-03 — Successful SMB session setup
+Packet 41: SMB2 Session Setup response `STATUS_SUCCESS (0x00000000)`. The server accepted the session setup. This is distinct from proof of accessing a share, reading data, or gaining privileged rights.
+
+### F-04 — NTLM challenge-response observed
+Packet 39 contains `NTLMSSP_AUTH (3)`, domain `LAB`, account `socuser`, workstation `KALI`, and an NTLM response field. The response is credential-derived, not a plaintext password. Presence of an NTLMSSP response is **not** evidence that the password was disclosed. Client-advertised SMB signing support does not prove signing was required or used for every message.
+
+, `NETLOGON`, and `SYSVOL`. **Listing share names is not proof of reading or writing files.**
+
+### Screenshot 31 — NTLMSSP authentication
+
+**Withheld from inline rendering pending sanitization.** Packet 39 identifies `NTLMSSP_AUTH`, domain LAB, account socuser and workstation KALI. Redact the NTLM response, session-key fields and hex pane before making this screenshot public. `STATUS_MORE_PROCESSING_REQUIRED` in the intermediate exchange is expected and is not a failed login.
+
 ## Evidence register
 
 | Screenshot | Description | Reviewer focus |
@@ -47,7 +191,7 @@ Packet 39 contains `NTLMSSP_AUTH (3)`, domain `LAB`, account `socuser`, workstat
 | 30 | SMB2 authentication success | Packet 41 and NT status `0x00000000` |
 | 31 | NTLMSSP authentication exchange | Packet 39, `NTLMSSP_AUTH (3)`, domain/account; **redact response bytes, session keys and hex pane** |
 
-Screenshot 27 (general overview) was intentionally omitted as redundant. Do not publish unredacted NTLM response material or the original packet capture.
+Screenshot 27 was an empty preliminary capture and was intentionally omitted. Do not publish unredacted NTLM response material or the original packet capture.
 
 ## Reproducible Wireshark filters
 ```wireshark
@@ -70,6 +214,16 @@ EXCLUDE documented lab tests and approved service behavior
 Tune thresholds with baseline traffic; one failed attempt is not brute force or password spraying.
 
 **MITRE ATT&CK context:** T1110 (Brute Force) is a *possible detection hypothesis* for repeated credential guesses, **not a confirmed technique in this lab**. Network authentication and Windows log correlation are the demonstrated skills.
+
+## Defensive priorities and risk assessment
+
+**Identity hygiene:** Prior lab enumeration placed `socuser` in Domain Admins. Confirm whether that membership is necessary; use a standard account for routine testing and a separate privileged identity only for authorized administrative tasks.
+
+**Network exposure:** Restrict SMB TCP/445 to approved segments and sources. Prior testing identified required SMB signing on DC02, a positive control worth maintaining. A reachable port alone is not a vulnerability.
+
+**Authentication visibility:** Review NTLM usage and migration feasibility before restricting it. Where auditing is enabled, Windows 4776 can provide credential-validation context and 5140/5145 can help distinguish share access from mere enumeration. Do not claim those events were observed in IR-004 without evidence.
+
+**ATT&CK accuracy:** T1021.002 (SMB/Windows Admin Shares) and T1110 (Brute Force) are useful investigative references, not confirmed adversary behaviors in this controlled case.
 
 ## Analyst workflow and follow-up
 1. Preserve private PCAP and record capture provenance/timezone.
