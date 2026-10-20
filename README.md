@@ -6,8 +6,10 @@
 ![Nmap](https://img.shields.io/badge/Tool-Nmap-1679A7?style=flat-square)
 ![Active Directory](https://img.shields.io/badge/Target-Active_Directory-4B5563?style=flat-square)
 ![Windows Event Logs](https://img.shields.io/badge/Detection-Event_4625-2874A6?style=flat-square)
-![Evidence](https://img.shields.io/badge/Evidence-26_Screenshots-218838?style=flat-square)
+![Evidence](https://img.shields.io/badge/Evidence-Packet_Analysis-218838?style=flat-square)
 ![Status](https://img.shields.io/badge/Project-Documented-218838?style=flat-square)
+
+**[Featured case study: IR-004 — Wireshark SMB2 / NTLMSSP Network Forensics](reports/IR-004-SMB-NTLM-Network-Forensics.md)** · [IR-004 evidence and analysis](reports/IR-004-SMB-NTLM-Network-Forensics.md#visual-evidence-and-analyst-interpretation)
 
 **Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
 
@@ -140,6 +142,14 @@ The evidence set now contains **26 numbered screenshots**, with screenshots 11�
 **Completed October 18, 2026.** Investigated four controlled failed network logons on **DC02** originating from Kali (`192.168.56.105`) against `LAB\\socuser`. Windows Event ID **4625** recorded Logon Type **3**, status `0xC000006D`, substatus `0xC000006A` (incorrect password), and MSV1_0 authentication-package information. The four events were logged between **02:42:55 and 02:47:08 AM**. This is a controlled lab simulation, **not** evidence of brute force or compromise.
 
 **[Read the IR-003 incident report](reports/IR-003-SMB-Authentication-Failure.md)** · [Study notes & active recall](docs/IR-003-Study-Notes.md) · [Interview questions & scenarios](docs/IR-003-Interview-Review.md) · [Screenshot 24: failed login](screenshots/24-SMB-Failed-Logon-4625-Kali-to-DC02.png) · [Screenshot 25: timeline](screenshots/25-Failed-Logon-Event-Timeline.png) · [Screenshot 26: authentication details](screenshots/26-SMB-Authentication-Protocol-4625.png)
+
+## IR-004 — SMB2 and NTLMSSP Packet-Level Investigation
+
+**Completed October 2026.** Analyzed authorized authentication from Kali `192.168.56.105` to DC02 `192.168.56.101` using Wireshark. Documented TCP packets **10–12** (handshake), SMB2 packet **23** (`STATUS_LOGON_FAILURE`), SMB2 packet **41** (`STATUS_SUCCESS`), and NTLMSSP AUTH packet **39** (domain `LAB`, account `socuser`).
+
+**Security interpretation:** A successful SMB2 session setup and share-name listing do **not** prove file access, lateral movement, or compromise. Detection guidance covers Windows Events 4625/4624 and evidence-based correlation. The raw PCAP is intentionally private because it may contain credential-derived NTLM responses and session-key material. Screenshot 27 was an empty preliminary capture and is omitted; screenshot 31 requires redaction before public publication.
+
+**[Read the IR-004 investigation and visual evidence](reports/IR-004-SMB-NTLM-Network-Forensics.md)**
 
 ## Engineering Takeaways
 
