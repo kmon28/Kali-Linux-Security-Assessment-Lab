@@ -6,10 +6,10 @@
 ![Nmap](https://img.shields.io/badge/Tool-Nmap-1679A7?style=flat-square)
 ![Active Directory](https://img.shields.io/badge/Target-Active_Directory-4B5563?style=flat-square)
 ![Windows Event Logs](https://img.shields.io/badge/Detection-Event_4625-2874A6?style=flat-square)
-![Evidence](https://img.shields.io/badge/Evidence-23_Screenshots-218838?style=flat-square)
+![Evidence](https://img.shields.io/badge/Evidence-26_Screenshots-218838?style=flat-square)
 ![Status](https://img.shields.io/badge/Project-Documented-218838?style=flat-square)
 
-**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md)
+**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md)
 
 ## Executive Summary
 
@@ -133,7 +133,13 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 
 **[Read the complete Kerberos investigation report](reports/IR-002-kerberos-rc4-aes256-hardening.md)** · [Command reference](commands/kerberos-command-reference.md) · [Detection engineering and MITRE mapping](docs/kerberos-detection-engineering.md) · [Evidence index (11–23)](docs/kerberos-evidence-index.md) · [RC4 investigation screenshot 22](screenshots/22-Kerberos-RC4-Investigation.png) · [AES-256 verification screenshot 23](screenshots/23-Kerberos-AES256-Final-Verification.png)
 
-The evidence set now contains **23 numbered screenshots**, with screenshots 11–23 covering Kerberos setup, auditing, event investigation, and encryption verification. See the full [screenshots directory](screenshots/).
+The evidence set now contains **26 numbered screenshots**, with screenshots 11–23 covering Kerberos setup, auditing, event investigation, and encryption verification, and screenshots 24–26 covering DC02 failed authentication triage. See the full [screenshots directory](screenshots/).
+
+## IR-003 — DC02 SMB Authentication Failure Investigation
+
+**Completed October 18, 2026.** Investigated four controlled failed network logons on **DC02** originating from Kali (`192.168.56.105`) against `LAB\\socuser`. Windows Event ID **4625** recorded Logon Type **3**, status `0xC000006D`, substatus `0xC000006A` (incorrect password), and MSV1_0 authentication-package information. The four events were logged between **02:42:55 and 02:47:08 AM**. This is a controlled lab simulation, **not** evidence of brute force or compromise.
+
+**[Read the IR-003 incident report](reports/IR-003-SMB-Authentication-Failure.md)** · [Screenshot 24: failed login](screenshots/24-SMB-Failed-Logon-4625-Kali-to-DC02.png) · [Screenshot 25: timeline](screenshots/25-Failed-Logon-Event-Timeline.png) · [Screenshot 26: authentication details](screenshots/26-SMB-Authentication-Protocol-4625.png)
 
 ## Engineering Takeaways
 
