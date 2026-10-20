@@ -1,90 +1,268 @@
-# IR-003 — SMB Authentication Failure Investigation
+# IR-003 | Investigating Failed SMB Authentication on a Windows Domain Controller
 
-**Investigation date:** October 18, 2026 (local lab time)  
-**Environment:** Authorized VirtualBox host-only lab, `lab.local`  
-**Classification:** Controlled security simulation / blue-team investigation  
-**Disposition:** Authentication failures confirmed; no successful intrusion established
+> **SOC case study · Windows Security Logs · Active Directory · Kali Linux**  
+> **Investigation:** October 18, 2026 · **Environment:** Isolated, authorized VirtualBox lab · **Status:** Closed — expected simulated activity
 
-## Executive summary
+[Executive brief](#1-executive-brief) · [Timeline](#3-event-timeline) · [Technical analysis](#4-technical-evidence-explained) · [Detection engineering](#6-detection-engineering) · [Evidence](#8-evidence-gallery) · [Recommendations](#9-defensive-recommendations)
 
-Four Windows Security Event ID **4625** records were observed on the Windows Server 2022 domain controller (DC02) during a controlled failed SMB authentication exercise. The attempted account was `LAB\socuser`, and the observed source address was the Kali Linux VM, `192.168.56.105`. The failures were associated with invalid password authentication. The four events occurred over approximately four minutes. This supports a small cluster of unsuccessful network logons, **not** a conclusion of brute-force activity, password spraying, or compromise.
+---
 
-## Scope and systems
+## 1. Executive brief
 
-| System | Role | Lab IP |
+### The situation — in plain English
+
+A Kali Linux test machine attempted to sign in to a Windows domain controller using an incorrect password. Windows rejected the attempts and recorded them in its Security event log. I investigated those records to identify **who**, **where**, **when**, **how**, and **why** the authentication failed.
+
+### The finding — technically
+
+**Four Windows Security Event ID 4625 records** appeared on **DC02** between **02:42:55 and 02:47:08 AM** on October 18, 2026. A detailed event identified the account `LAB\socuser`, source `192.168.56.105` (Kali), **Logon Type 3**, status `0xC000006D`, substatus `0xC000006A`, and authentication package `MICROSOFT_AUTHENTICATION_PACKAGE_V1_0` (MSV1_0).
+
+| Question | Answer |
+|---|---|
+| **What happened?** | A cluster of four failed network logons |
+| **Where?** | DC02, the `lab.local` Active Directory domain controller |
+| **Who was targeted?** | `LAB\socuser` in the inspected event |
+| **Where did it originate?** | Kali Linux at `192.168.56.105` |
+| **Why did it fail?** | Incorrect password (`0xC000006A`) |
+| **Was access gained?** | No successful access demonstrated by this evidence |
+| **Analyst disposition** | Expected, authorized lab simulation; no confirmed compromise |
+
+**Key distinction:** A short cluster of failed logons is a **signal to investigate**, not proof of brute force or malicious intent.
+
+### What this project demonstrates
+
+- Generated controlled authentication telemetry and investigated it from the **defender's perspective**.
+- Correlated an event timeline with account, source-IP, and Windows failure-code details.
+- Interpreted Windows authentication internals without overclaiming what one event proves.
+- Produced an evidence-backed SOC incident report and practical monitoring guidance.
+
+---
+
+## 2. Environment and scope
+
+| Asset | Purpose | Address |
 |---|---|---|
-| Kali Linux | Authorized test source | `192.168.56.105` |
-| DC02 (Windows Server 2022) | Active Directory domain controller / log source | `192.168.56.101` |
-| CLIENT01 | Not used in this IR-003 exercise | `192.168.56.102` |
+| **Kali Linux** | Authorized authentication-test source | `192.168.56.105` |
+| **DC02 / Windows Server 2022** | Active Directory domain controller and Security log source | `192.168.56.101` |
+| CLIENT01 / Windows 10 | Earlier, separate SMB lab; **not involved in IR-003** | `192.168.56.102` |
 
-**Important:** IR-003 concerns authentication against **DC02**, not the earlier CLIENT01 SMB validation documented in screenshots 08–10.
+**Domain:** `lab.local` · **Network:** VirtualBox host-only `192.168.56.0/24`
 
-## Event timeline
+```text
+    KALI LINUX                              DC02 / WINDOWS SERVER
+    192.168.56.105                          192.168.56.101
+          |                                         |
+          |  SMB network authentication attempt     |
+          |---------------------------------------->|
+          |             incorrect password          |
+          |<----------------------------------------|
+          |               access denied             |
+          |                                         |
+          |                        Windows Security Event 4625
+          |                        (account, IP, time, status)
+```
 
-| Local timestamp (October 18, 2026) | Event | Observation |
+**Scope guardrail:** All activity was authorized within the lab. This is **not** a production breach, vulnerability exploitation, or a claim that credentials were stolen.
+
+---
+
+## 3. Event timeline
+
+**Source:** DC02 Security log, Event ID `4625`.
+
+| Time (October 18, local) | Event ID | Finding |
 |---|---|---|
-| 02:42:55 AM | 4625 | Failed logon |
-| 02:43:22 AM | 4625 | Failed logon |
-| 02:46:54 AM | 4625 | Failed logon |
-| 02:47:08 AM | 4625 | Failed logon |
+| 02:42:55 AM | 4625 | Failed logon recorded |
+| 02:43:22 AM | 4625 | Failed logon recorded |
+| 02:46:54 AM | 4625 | Failed logon recorded |
+| 02:47:08 AM | 4625 | Failed logon recorded |
 
-The query returned seven historical 4625 events in total, including three older events from September. **Only the four October 18 events** are attributed to this test window; historical events are not automatically part of the same activity.
+**Time span:** 4 minutes, 13 seconds from first to last event.
 
-## Key event details
+The PowerShell query returned **seven historical events overall**: four during this October 18 test window and three older events from September. Older events are **not** assumed to be related.
 
-| Field | Observed value | Interpretation |
+**Analyst note:** The timeline screenshot establishes the four event times. The detailed event screenshots establish the account, source IP, and failure information for inspected events. Without exporting and inspecting each complete record, do not assume every field is identical across all four.
+
+---
+
+## 4. Technical evidence explained
+
+The table intentionally includes both a plain-English interpretation and the technical significance.
+
+| Windows field | Observed value | Meaning / analyst use |
 |---|---|---|
-| Event ID | `4625` | Failed account logon |
-| Target account | `LAB\socuser` | Account named in the failed authentication |
-| Logon type | `3` | Network logon |
-| Source network address | `192.168.56.105` | Kali Linux lab VM |
-| Status | `0xC000006D` | General logon failure |
-| Substatus | `0xC000006A` | Incorrect password |
-| Logon process | `Advapi` | Windows logon API/process context |
-| Authentication package | `MICROSOFT_AUTHENTICATION_PACKAGE_V1_0` | MSV1_0, associated with NTLM-family authentication |
+| **Event ID** | `4625` | Windows logged an **unsuccessful** sign-in |
+| **Target account** | `LAB\socuser` | Identity used in the inspected failed attempt |
+| **Logon Type** | `3` | Network authentication, rather than someone typing at the server console |
+| **Source Network Address** | `192.168.56.105` | Network origin in the event; matches the Kali lab VM |
+| **Status** | `0xC000006D` | General authentication failure |
+| **Substatus** | `0xC000006A` | More specific reason: **incorrect password** |
+| **Logon Process** | `Advapi` | Windows logon process/API context, not an attack-tool identifier |
+| **Authentication Package** | `MICROSOFT_AUTHENTICATION_PACKAGE_V1_0` | MSV1_0, a Windows authentication package associated with NTLM-family processing |
 
-**Protocol caveat:** The MSV1_0 field is consistent with NTLM-related processing but does not by itself establish the exact NTLM version or reconstruct the full network exchange. Packet capture or additional protocol-specific telemetry would be needed for that conclusion.
+### Why the failure codes matter
 
-## Reproduction and collection
+- **`0xC000006D`** answers: *Did the login succeed?* **No.**
+- **`0xC000006A`** answers: *Why not?* **The password was incorrect.**
+- **Logon Type 3** answers: *What kind of access was attempted?* **A network logon.**
 
-An authorized operator initiated controlled SMB authentication attempts from Kali toward DC02 using an incorrect password. The defender-side Windows Security log was examined in elevated PowerShell.
+This combination is more useful than merely reporting “a failed login,” because it helps distinguish a bad password from other failure reasons and narrows the investigation to network activity.
+
+### Does MSV1_0 prove NTLMv2?
+
+**No.** The observed authentication package is consistent with **NTLM-related Windows authentication processing**, but the log alone does not identify the exact NTLM version or provide a packet-by-packet reconstruction. Additional Windows telemetry or an authorized packet capture would be required to validate the precise exchange.
+
+### Why the target account deserves attention
+
+An earlier authorized LDAP group-membership check listed **`socuser` among Domain Admins**. That makes the account potentially high-impact if credentials were compromised. **No compromise was observed here**, and the membership itself does not prove a misconfiguration; it merits a **least-privilege review**.
+
+---
+
+## 5. Investigation workflow
+
+| Step | Analyst action | Result |
+|---|---|---|
+| **1. Generate** | Initiate controlled unsuccessful SMB authentication from Kali | Expected failure |
+| **2. Detect** | Inspect DC02 Windows Security events | Event ID 4625 located |
+| **3. Correlate** | Compare timestamps in recent 4625 events | Four-event cluster identified |
+| **4. Attribute** | Inspect source IP, account, and logon type | Kali source and network authentication identified in detailed evidence |
+| **5. Explain** | Interpret status, substatus, and authentication package | Incorrect password; MSV1_0 observed |
+| **6. Assess** | Compare activity against known authorized test | Closed as expected simulated activity |
+| **7. Document** | Preserve screenshots and report limitations | Reproducible portfolio evidence |
+
+### Commands used on DC02 (PowerShell)
 
 ```powershell
-# Timeline of recent failed logons
+# Recent failed logons — fast timeline
 Get-WinEvent -FilterHashtable @{LogName='Security';Id=4625} -MaxEvents 20 |
     Select-Object TimeCreated,Id
 
-# Inspect full details of the most recent failed logon
+# Most recent failed logon — full event explanation
 Get-WinEvent -FilterHashtable @{LogName='Security';Id=4625} -MaxEvents 1 |
     Format-List TimeCreated,Message
 ```
 
-These commands read existing events; they do not modify security settings or generate additional failed logons.
+These are **read-only** commands. They retrieve existing Windows event records and do not generate login attempts.
 
-## Evidence
+---
 
-- [Screenshot 24 — Failed SMB logon and Kali source IP](../screenshots/24-SMB-Failed-Logon-4625-Kali-to-DC02.png)
-- [Screenshot 25 — Failed-logon timeline](../screenshots/25-Failed-Logon-Event-Timeline.png)
-- [Screenshot 26 — Authentication package and failure details](../screenshots/26-SMB-Authentication-Protocol-4625.png)
+## 6. Detection engineering
 
-## Analysis and triage decision
+### Detection idea: repeated failed network logons
 
-The shared account, source address, network logon type, incorrect-password substatus, and timestamps support correlation of the four failures as a short authentication-failure cluster. Because the exercise was intentionally generated in an isolated lab, the appropriate disposition is **expected simulated activity**. There is no evidence in this collection of successful authentication, account takeover, credential theft, or lateral movement.
+**Goal:** Flag clusters of Windows 4625 network-logon failures for review, especially where a privileged account or domain controller is involved.
 
-A real SOC would check successful logons (4624), domain authentication events where applicable (such as 4776/4771), source-host ownership, asset criticality, account privilege, and whether the failures match an authorized activity or an established baseline before assigning severity.
+**Suggested starting logic (illustrative, not deployed):**
 
-## Defensive recommendations
+```text
+DATA SOURCE: Windows Security events
+FILTER:
+  EventID == 4625
+  AND LogonType == 3
 
-1. Alert on repeated 4625 failures using **time windows, source IP, target account, and environment-specific thresholds**; investigate rather than automatically labeling every cluster brute force.
-2. Correlate failed 4625 activity with successful 4624 events and relevant domain-controller authentication telemetry.
-3. Review whether `socuser` requires **Domain Admins** membership. Apply least privilege only after confirming lab dependencies; do not remove permissions blindly.
-4. Restrict SMB exposure to authorized management and workstation networks, and keep appropriate auditing enabled.
-5. For future protocol analysis, capture authorized traffic in Wireshark and validate NTLM/Kerberos behavior instead of inferring a protocol version from one event field.
+GROUP BY:
+  Computer + TargetUserName + IpAddress
 
-## Limitations
+TIME WINDOW:
+  5 minutes
 
-This report is based on screenshots and observed Windows event output, not a complete exported EVTX log or PCAP. The precise sequence of all SMB client invocations was not preserved here. Four failures alone are insufficient to establish malicious intent, brute force, password spraying, or an exploitable vulnerability.
+EXAMPLE THRESHOLD:
+  >= 4 failures in that window
 
-## Skills demonstrated
+OUTPUT:
+  Computer, account, source IP, event count,
+  first seen, last seen, status/substatus
+```
 
-Windows Security Event triage; Event ID 4625 interpretation; network-source attribution; authentication failure-code analysis; timeline correlation; evidence preservation; concise incident reporting; and evidence-based threat assessment.
+**Important:** Four events in five minutes is a **demonstration threshold chosen to match this lab**, not a universally reliable production rule. Tune thresholds to the organization, account sensitivity, legitimate error rates, and logging volume. A real alert should preserve event context and support analyst triage rather than automatically classify an attacker.
+
+### Additional correlation opportunities
+
+| Event / source | Why an analyst would check it |
+|---|---|
+| **4624 — Successful logon** | Did a success follow the failures? |
+| **4776 — NTLM credential validation** | Additional NTLM-related domain authentication context, if logged |
+| **4771 — Kerberos pre-authentication failure** | Kerberos-specific failure context, if relevant |
+| **4768 / 4769 — Kerberos ticket activity** | Whether nearby ticket activity provides useful context |
+| **Windows Firewall / network telemetry** | Confirm connection direction, service exposure, and source behavior |
+| **Asset and account inventory** | Determine whether source and account activity were authorized |
+
+**No claim is made that these additional events were collected in IR-003.**
+
+### MITRE ATT&CK context
+
+**T1110 — Brute Force** is a *possible investigative hypothesis* when repeated authentication failures are observed. However, this case **does not establish T1110**: only four controlled failures were observed and the operator was authorized. MITRE mapping is included to demonstrate how an analyst might frame further investigation, not to label the lab as a confirmed attack.
+
+---
+
+## 7. SOC triage and disposition
+
+### Questions an analyst should ask
+
+1. Is the source IP a known workstation, scanner, test VM, or unknown host?
+2. Is the targeted identity privileged or otherwise sensitive?
+3. Are failures concentrated on one account, or spread across many accounts?
+4. Did a successful authentication occur shortly afterward?
+5. Does the activity match a maintenance window, user report, or approved security test?
+6. Is the same source attempting other services or systems?
+
+### Decision for this case
+
+| Category | Assessment |
+|---|---|
+| **Activity type** | Failed network authentication |
+| **Observed impact** | No successful access demonstrated |
+| **Cause in lab** | Deliberate incorrect-password tests |
+| **Malicious activity confirmed?** | **No** |
+| **Response** | Preserve evidence, document, and close as expected simulation |
+| **Escalation** | Not warranted on the observed lab evidence alone |
+
+**What would change the decision?** Unexpected source ownership, a privileged-account success after failures, many accounts targeted, unusually high request volume, or corroborating malicious network/endpoint behavior.
+
+---
+
+## 8. Evidence gallery
+
+The three screenshots are retained separately so a reviewer can verify the analysis.
+
+| Evidence | What to look for |
+|---|---|
+| **[24 — Failed logon details](../screenshots/24-SMB-Failed-Logon-4625-Kali-to-DC02.png)** | Event 4625, account, failed password, and Kali source IP |
+| **[25 — Event timeline](../screenshots/25-Failed-Logon-Event-Timeline.png)** | Four October 18 events and three unrelated older records |
+| **[26 — Authentication detail](../screenshots/26-SMB-Authentication-Protocol-4625.png)** | Logon Process `Advapi`, MSV1_0 authentication package, status and substatus |
+
+> **Evidence quality note:** Screenshots provide a readable audit trail, but an exported `.evtx` file and a PCAP would support more complete forensic validation. Neither is represented as collected here.
+
+---
+
+## 9. Defensive recommendations
+
+| Priority | Recommendation | Rationale |
+|---|---|---|
+| **High** | Review whether `socuser` needs **Domain Admins** membership | Reduce potential impact if credentials are ever exposed; verify dependencies before changing permissions |
+| **High** | Monitor failed logons for privileged accounts and domain controllers | Higher-value identities and systems deserve more context-aware triage |
+| **Medium** | Correlate 4625 with 4624 and relevant 4776/4771 activity | Distinguish unsuccessful tests, normal mistakes, and potentially suspicious patterns |
+| **Medium** | Restrict SMB to authorized hosts/networks | Reduce unnecessary network access paths |
+| **Medium** | Establish baselines and tune thresholds | Prevent routine mistypes from overwhelming analysts |
+| **Future validation** | Capture authorized SMB authentication traffic in Wireshark | Confirm the network protocol details that the Windows event cannot fully prove |
+
+---
+
+## 10. Limitations and integrity statement
+
+- The investigation relies on observed screenshots and Windows event output; **no full EVTX export or packet capture** is included.
+- The exact command sequence for each of the four failed attempts was not preserved in the report.
+- Detailed event fields were inspected for selected records; not every field was individually verified for all four.
+- The report does **not** demonstrate credential compromise, exploitation, password spraying, lateral movement, or a successful intrusion.
+- A domain-controller event and an NTLM-associated package do not, by themselves, prove an NTLM version.
+- The earlier **CLIENT01** exercise is separate and should not be conflated with this **DC02** investigation.
+
+## 11. Interview-ready summary
+
+> “I built an isolated Active Directory lab with Kali Linux and Windows Server, generated controlled SMB authentication failures, and investigated the defender-side Windows Security logs. I correlated four Event 4625 records within a five-minute window, traced the inspected event to Kali's IP address, and interpreted Logon Type 3, Windows failure codes, and the MSV1_0 authentication package. I then documented the evidence, proposed detection logic, and explained why the findings did not prove a brute-force attack. The exercise strengthened my Windows log analysis, authentication troubleshooting, and SOC investigation skills.”
+
+**Skills:** Windows Event Log analysis · Active Directory · SMB authentication · incident triage · timeline correlation · detection design · MITRE ATT&CK-informed investigation · evidence-based reporting
+
+---
+
+*IR-003 is an educational blue-team case study conducted only on authorized lab infrastructure.*
