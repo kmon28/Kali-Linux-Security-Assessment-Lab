@@ -1,6 +1,6 @@
 # IR-005 — Active Directory Privileged Group Membership Investigation
 
-**Status:** Controlled simulation completed; screenshots 36–38 captured locally, repository upload pending.  
+**Status:** Controlled simulation completed; screenshots 36–38 verified in the repository.  
 **Environment:** DC02, Windows Server 2022, `lab.local` (isolated VirtualBox lab).  
 **Tools:** Active Directory PowerShell, Windows Security Event Log, `Get-WinEvent`.  
 **Scenario:** Authorized temporary addition of `socuser` to the `Domain Admins` security-enabled global group, followed by removal and verification.
@@ -23,19 +23,22 @@ This was an **authorized simulation**, not an observed attacker intrusion. The e
 
 ## Screenshot register
 
-These screenshot names continue the existing repository numbering after screenshots 32–35. **Do not treat these as published image links until the actual PNG files are uploaded.**
+These are the actual uploaded evidence files, verified on the repository's default branch.
 
 | # | Planned artifact | What it should show |
 |---|---|---|
-| 36 | `36-AD-DomainAdmins-4728-Privilege-Addition.png` | Event 4728: `socuser` added to Domain Admins |
-| 37 | `37-AD-DomainAdmins-4729-Privilege-Removal.png` | Event 4729: `socuser` removed from Domain Admins |
-| 38 | `38-AD-DomainAdmins-Remediation-Verified.png` | `Get-ADGroupMember` showing only `Administrator` |
+| 36 | [36-AD-DomainAdmins-Member-Added-4728.png](../screenshots/36-AD-DomainAdmins-Member-Added-4728.png) | Event 4728: `socuser` added to Domain Admins |
+| 37 | [37-AD-DomainAdmins-Member-Removed-4729.png](../screenshots/37-AD-DomainAdmins-Member-Removed-4729.png) | Event 4729: `socuser` removed from Domain Admins |
+| 38 | [38-AD-DomainAdmins-Remediation-Verified.png](../screenshots/38-AD-DomainAdmins-Remediation-Verified.png) | `Get-ADGroupMember` showing only `Administrator` |
 
-Screenshots **32–35** belong to the preceding DC02 firewall baseline, hardening, Kali connectivity validation, and firewall verification workflow, and are not relabeled as IR-005 group membership evidence.
+Screenshots **32–35** belong to the separate [DC02 firewall validation case study](IR-005-DC02-Firewall-Hardening-Validation.md), not this AD group-membership investigation.
 
 ## Investigation method
 
 ### 1. Identify a privileged membership change
+
+![Event 4728 — socuser added to Domain Admins](../screenshots/36-AD-DomainAdmins-Member-Added-4728.png)
+
 
 Windows Security **4728** records the addition of a member to a security-enabled **global** group. Relevant fields include the **Subject** (who made the change), **Member** (who was added), **Group** (which group changed), and timestamp.
 
@@ -43,9 +46,15 @@ Observed subject: `LAB\Administrator`. Observed member: `socuser`. Observed grou
 
 ### 2. Review the corresponding removal
 
+![Event 4729 — socuser removed from Domain Admins](../screenshots/37-AD-DomainAdmins-Member-Removed-4729.png)
+
+
 Windows Security **4729** records removal of a member from a security-enabled global group. The captured event identifies the same subject, member, and group. Event ordering supports the simulated grant-then-removal sequence.
 
 ### 3. Validate current state
+
+![Verified Domain Admins membership after remediation](../screenshots/38-AD-DomainAdmins-Remediation-Verified.png)
+
 
 ```powershell
 Get-ADGroupMember -Identity "Domain Admins" | Select-Object Name,SamAccountName
@@ -79,7 +88,7 @@ Get-WinEvent -FilterHashtable @{LogName='Security';ID=4728,4729} -MaxEvents 20 |
 
 - The captured change was performed deliberately by a lab administrator.
 - No evidence demonstrates an external adversary or actual abuse of Domain Admin privileges.
-- Screenshots 36–38 are **locally captured** according to the lab walkthrough but have **not yet been verified as present in this repository**.
+- Screenshots 36–38 are present in this repository. The evidence demonstrates the documented membership change and current direct membership, not all potential privileged access.
 - Event logs and membership checks demonstrate the specific tested workflow, not comprehensive AD security assurance.
 
 ## Interview-ready summary
