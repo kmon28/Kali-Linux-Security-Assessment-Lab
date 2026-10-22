@@ -11,6 +11,8 @@
 
 **[Featured case study: IR-004 — Wireshark SMB2 / NTLMSSP Network Forensics](reports/IR-004-SMB-NTLM-Network-Forensics.md)** · [IR-004 evidence and analysis](reports/IR-004-SMB-NTLM-Network-Forensics.md#visual-evidence-and-analyst-interpretation)
 
+**[IR-005 — Active Directory Privileged Group Membership Investigation](reports/IR-005-AD-Privilege-Escalation-Investigation.md)** — Event 4728 addition, Event 4729 removal, and final membership verification. Screenshots 36–38 captured locally; image upload pending.
+
 **Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
 
 ## Executive Summary
@@ -135,7 +137,7 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 
 **[Read the complete Kerberos investigation report](reports/IR-002-kerberos-rc4-aes256-hardening.md)** · [Command reference](commands/kerberos-command-reference.md) · [Detection engineering and MITRE mapping](docs/kerberos-detection-engineering.md) · [Evidence index (11–23)](docs/kerberos-evidence-index.md) · [RC4 investigation screenshot 22](screenshots/22-Kerberos-RC4-Investigation.png) · [AES-256 verification screenshot 23](screenshots/23-Kerberos-AES256-Final-Verification.png)
 
-The evidence set now contains **26 numbered screenshots**, with screenshots 11–23 covering Kerberos setup, auditing, event investigation, and encryption verification, and screenshots 24–26 covering DC02 failed authentication triage. See the full [screenshots directory](screenshots/).
+The Kerberos evidence sequence spans screenshots 11–23; screenshots 24–26 cover DC02 failed authentication triage. Subsequent local evidence covers SMB packet analysis (28–31), DC02 firewall validation (32–35), and privileged group changes (36–38); later image uploads are not yet verified in this repository. See the full [screenshots directory](screenshots/).
 
 ## IR-003 — DC02 SMB Authentication Failure Investigation
 
