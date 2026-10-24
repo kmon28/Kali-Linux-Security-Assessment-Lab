@@ -13,9 +13,13 @@
 
 **[IR-005 — Active Directory Privileged Group Membership Investigation](reports/IR-005-AD-Privilege-Escalation-Investigation.md)** — Event 4728 addition, Event 4729 removal, and final membership verification, with embedded screenshots 36–38.
 
+**[IR-006 — Failed-Logon Detection and PowerShell Validation](reports/IR-006-Failed-Logon-Detection.md)** — Event 4625 investigation, source correlation, five-minute threshold testing, and reusable PowerShell detection. [View screenshot 48](screenshots/48-IR006-Reusable-Detection-Script.png).
+
+**[IR-007 — SMB Network Logon and Kerberos Audit Recovery](reports/IR-007-SMB-Kerberos-Audit-Recovery.md)** — Event 4624 Type 3, source-IP attribution, Event 4769 audit-policy troubleshooting, GPO remediation and retest. [View screenshot 49](screenshots/49-IR007-SMB-Network-Logon.png) · [View screenshot 50](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png).
+
 **[DC02 Firewall Hardening and Kali Connectivity Validation](reports/IR-005-DC02-Firewall-Hardening-Validation.md)** — firewall baseline, hardening, Kali connectivity validation, and verification, with embedded screenshots 32–35.
 
-**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
+**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [IR-006](reports/IR-006-Failed-Logon-Detection.md) · [IR-007](reports/IR-007-SMB-Kerberos-Audit-Recovery.md) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
 
 ## Executive Summary
 
@@ -120,6 +124,47 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 | 08 | Controlled SMB login failure | [View screenshot](screenshots/08-Controlled-SMB-Authentication-Failure.png) |
 | 09 | CLIENT01 Security Event 4625 | [View screenshot](screenshots/09-Windows-Event-4625-Investigation.png) |
 | 10 | CLIENT01 TCP/445 filtered on retest | [View screenshot](screenshots/10-SMB-Firewall-Hardening-Retest.png) |
+| 11 | Kerberos SPN configuration | [View screenshot](screenshots/11-Kerberos-SPN-Configuration.png) |
+| 12 | Kerberos auditing enabled | [View screenshot](screenshots/12_Kerberos_Auditing_Enabled.png) |
+| 13 | Kerberos test account configured | [View screenshot](screenshots/13_Kerberos_Test_Account_Configured.png) |
+| 14 | Kerberos service ticket detection (4769) | [View screenshot](screenshots/14-Kerberos-Event4769-Ticket-Detection.png) |
+| 15 | Kerberos service account assessment | [View screenshot](screenshots/15-Kerberos-Service-Account-Security-Assessment.png) |
+| 16 | AES-256 ticket verified | [View screenshot](screenshots/16-Kerberos-AES256-Ticket-Verified.png) |
+| 17 | AES-256 Event 4769 | [View screenshot](screenshots/17-Kerberos-AES256-Event4769.png) |
+| 18 | RC4 Event 4769 | [View screenshot](screenshots/18-Kerberos-RC4-Event4769.png) |
+| 19 | AES-256 comparison | [View screenshot](screenshots/19-Kerberos-AES256-Comparison.png) |
+| 20 | RC4 detection | [View screenshot](screenshots/20-Kerberos-RC4-Detection.png) |
+| 21 | RC4 investigation | [View screenshot](screenshots/21-Kerberos-RC4-Investigation.png) |
+| 22 | RC4 investigation continuation | [View screenshot](screenshots/22-Kerberos-RC4-Investigation.png) |
+| 23 | AES-256 final verification | [View screenshot](screenshots/23-Kerberos-AES256-Final-Verification.png) |
+| 24 | Kali-to-DC02 failed SMB logon | [View screenshot](screenshots/24-SMB-Failed-Logon-4625-Kali-to-DC02.png) |
+| 25 | Failed logon timeline | [View screenshot](screenshots/25-Failed-Logon-Event-Timeline.png) |
+| 26 | SMB authentication protocol details | [View screenshot](screenshots/26-SMB-Authentication-Protocol-4625.png) |
+| 28 | TCP three-way handshake | [View screenshot](screenshots/28-TCP-Three-Way-Handshake.png) |
+| 29 | SMB2 failed authentication | [View screenshot](screenshots/29-SMB2-Authentication-Failure.png) |
+| 30 | SMB2 successful authentication | [View screenshot](screenshots/30-SMB2-Authentication-Success.png) |
+| 31 | NTLMSSP authentication exchange (review for sensitive values) | [View screenshot](screenshots/31-NTLMSSP-Authentication-Exchange.png) |
+| 32 | DC02 firewall baseline | [View screenshot](screenshots/32-DC02-Firewall-Baseline.png) |
+| 33 | DC02 firewall hardening | [View screenshot](screenshots/33-DC02-Firewall-Hardening.png) |
+| 34 | Kali connectivity validation | [View screenshot](screenshots/34-Kali-DC02-Connectivity-Validation.png) |
+| 35 | DC02 firewall verification | [View screenshot](screenshots/35-DC02-Firewall-Verfication.png) |
+| 36 | Domain Admins member added (4728) | [View screenshot](screenshots/36-AD-DomainAdmins-Member-Added-4728.png) |
+| 37 | Domain Admins member removed (4729) | [View screenshot](screenshots/37-AD-DomainAdmins-Member-Removed-4729.png) |
+| 38 | Membership remediation verified | [View screenshot](screenshots/38-AD-DomainAdmins-Remediation-Verified.png) |
+| 39 | IR-006 successful SMB logon (4624) | [View screenshot](screenshots/39-IR006-Successful-SMB-Authentication-4624.png) |
+| 40 | IR-006 failed SMB logon (4625) | [View screenshot](screenshots/40-IR006-Failed-SMB-Authentication-4625.png) |
+| 41 | IR-006 authentication timeline | [View screenshot](screenshots/41-IR006-authentication-Detection-Timeline.png) |
+| 42 | IR-006 failed-login threshold | [View screenshot](screenshots/42-IR006-Failed-Login-Threshold-Detection.png) |
+| 43 | IR-006 source IP extraction | [View screenshot](screenshots/43-IR006-Authetication-Source-IP-Extraction.png) |
+| 44 | IR-006 five-minute threshold detection | [View screenshot](screenshots/44-IR006-Five-MInute-Threshold-Detection.png) |
+| 45 | IR-006 threshold alert | [View screenshot](screenshots/45-Five-MInute-Threshold-Alert-Triggered.png) |
+| 46 | IR-006 detection script | [View screenshot](screenshots/46-IR006-Five-Minute-Detection-Script.png) |
+| 47 | IR-006 historical validation | [View screenshot](screenshots/47-IR006-Historical-Detection-Validation.png) |
+| 48 | IR-006 reusable PowerShell detection | [View screenshot](screenshots/48-IR006-Reusable-Detection-Script.png) |
+| 49 | IR-007 SMB network logon (4624) | [View screenshot](screenshots/49-IR007-SMB-Network-Logon.png) |
+| 50 | IR-007 Kerberos audit validation (4769) | [View screenshot](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png) |
+
+**Coverage:** 49 uploaded numbered PNG screenshots (01–26 and 28–50). Screenshot 27 is intentionally absent; no placeholder or broken link is included. [Browse the full screenshot directory](screenshots/).
 
 ## Technical Documentation and Refresher Notes
 
