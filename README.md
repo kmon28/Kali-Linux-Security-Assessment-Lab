@@ -15,11 +15,13 @@
 
 **[IR-006 — Failed-Logon Detection and PowerShell Validation](reports/IR-006-Failed-Logon-Detection.md)** — Event 4625 investigation, source correlation, five-minute threshold testing, and reusable PowerShell detection. [View screenshot 48](screenshots/48-IR006-Reusable-Detection-Script.png).
 
+**[IR-008 — Failed-to-Successful Authentication Correlation](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md)** — PowerShell correlation of three Event 4625 failures and a subsequent Event 4624 Type 3 success from the same account/IP, with parser debugging and validated detection. [View screenshot 53](screenshots/53-IR008-Failed-Login-Detection-Alert.png).
+
 **[IR-007 — SMB Network Logon and Kerberos Audit Recovery](reports/IR-007-SMB-Kerberos-Audit-Recovery.md)** — Event 4624 Type 3, source-IP attribution, Event 4769 audit-policy troubleshooting, GPO remediation and retest. [View screenshot 49](screenshots/49-IR007-SMB-Network-Logon.png) · [View screenshot 50](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png).
 
 **[DC02 Firewall Hardening and Kali Connectivity Validation](reports/IR-005-DC02-Firewall-Hardening-Validation.md)** — firewall baseline, hardening, Kali connectivity validation, and verification, with embedded screenshots 32–35.
 
-**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [IR-006](reports/IR-006-Failed-Logon-Detection.md) · [IR-007](reports/IR-007-SMB-Kerberos-Audit-Recovery.md) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
+**Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [IR-006](reports/IR-006-Failed-Logon-Detection.md) · [IR-007](reports/IR-007-SMB-Kerberos-Audit-Recovery.md) · [IR-008](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
 
 ## Executive Summary
 
@@ -163,8 +165,9 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 | 48 | IR-006 reusable PowerShell detection | [View screenshot](screenshots/48-IR006-Reusable-Detection-Script.png) |
 | 49 | IR-007 SMB network logon (4624) | [View screenshot](screenshots/49-IR007-SMB-Network-Logon.png) |
 | 50 | IR-007 Kerberos audit validation (4769) | [View screenshot](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png) |
+| 53 | IR-008 PowerShell failed-login threshold alert | [View screenshot](screenshots/53-IR008-Failed-Login-Detection-Alert.png) |
 
-**Coverage:** 49 uploaded numbered PNG screenshots (01–26 and 28–50). Screenshot 27 is intentionally absent; no placeholder or broken link is included. [Browse the full screenshot directory](screenshots/).
+**Coverage:** Numbered screenshots 01–26 and 28–50, plus verified screenshot 53. Screenshot 27 is intentionally absent; other IR-008 image paths are pending verification and are not linked. [Browse the full screenshot directory](screenshots/).
 
 ## Technical Documentation and Refresher Notes
 
