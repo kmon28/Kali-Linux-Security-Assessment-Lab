@@ -15,6 +15,8 @@
 
 **[IR-006 — Failed-Logon Detection and PowerShell Validation](reports/IR-006-Failed-Logon-Detection.md)** — Event 4625 investigation, source correlation, five-minute threshold testing, and reusable PowerShell detection. [View screenshot 48](screenshots/48-IR006-Reusable-Detection-Script.png).
 
+**[IR-010 — Scheduled Task Persistence Simulation and Event Correlation](reports/IR-010-Scheduled-Task-Persistence-Detection.md)** — SYSTEM-context scheduled-task execution, Task Scheduler Events 100/200/201/102, troubleshooting Event 332, and verified cleanup. Screenshots 57–58 pending repository upload.
+
 **[IR-008 — Failed-to-Successful Authentication Correlation](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md)** — PowerShell correlation of three Event 4625 failures and a subsequent Event 4624 Type 3 success from the same account/IP, with parser debugging and validated detection. [View screenshot 53](screenshots/53-IR008-Failed-Login-Detection-Alert.png).
 
 **[IR-007 — SMB Network Logon and Kerberos Audit Recovery](reports/IR-007-SMB-Kerberos-Audit-Recovery.md)** — Event 4624 Type 3, source-IP attribution, Event 4769 audit-policy troubleshooting, GPO remediation and retest. [View screenshot 49](screenshots/49-IR007-SMB-Network-Logon.png) · [View screenshot 50](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png).
