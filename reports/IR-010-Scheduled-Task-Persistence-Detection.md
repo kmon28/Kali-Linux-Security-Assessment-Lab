@@ -67,12 +67,18 @@ Get-ScheduledTask -TaskName 'IR010-Lab-Persistence' -ErrorAction SilentlyContinu
 ```
 The second command produced no task object, supporting removal of the registered task. Historical events remain available for investigation.
 
-## Evidence capture checklist
-Local screenshots were requested as:
-- `57-IR010-ScheduledTask-Execution-Events.png` — Events 100/200/201/102 (upload to repository pending)
-- `58-IR010-Persistence-Removal-Verification.png` — unregister command and empty verification query (upload to repository pending)
+## Evidence inventory (screenshots 57–60)
 
-The investigation was visually validated in the working session. **Screenshot files are not asserted to be committed to this repository.**
+The following four screenshots were reported uploaded after the investigation. Their exact repository paths have not been independently verified, so direct image links are withheld rather than risking broken references.
+
+| Number | Evidence | Investigative value |
+|---|---|---|
+| 57 | Scheduled task execution events | Operational Events 100, 200, 201, and 102 establish successful task execution and completion |
+| 58 | Scheduled task creation, Security Event 4698 | Documents task registration in Windows Security telemetry |
+| 59 | Persistence removal verification | Shows task unregistration and absence on subsequent lookup |
+| 60 | Scheduled task registration, Operational Event 106 | Corroborates task registration in Task Scheduler telemetry |
+
+**Evidence handling:** The Event 4698 and Event 106 records represent different Windows logging channels, not duplicate screenshots. Execution and removal evidence are distinct. These observations support a benign lab simulation and do not establish malicious persistence.
 
 ## Analyst assessment and limitations
 This simulation demonstrates task configuration analysis, troubleshooting logon-context failure, process-action event correlation, return-code validation, and safe cleanup. It does **not** establish a stealthy persistence mechanism, automatic execution after reboot, elevated `RunLevel`, or malicious PowerShell behavior. `SYSTEM` identity alone is not an indicator of compromise. In production, triage should assess task provenance, author, executable signature/path, command line, creation/modification time, and expected administrative activity.
