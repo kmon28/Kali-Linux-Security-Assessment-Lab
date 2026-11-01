@@ -80,5 +80,47 @@ The following four screenshots were reported uploaded after the investigation. T
 
 **Evidence handling:** The Event 4698 and Event 106 records represent different Windows logging channels, not duplicate screenshots. Execution and removal evidence are distinct. These observations support a benign lab simulation and do not establish malicious persistence.
 
+## Detection engineering and SOC triage
+
+**Analytic hypothesis:** A newly registered scheduled task invoking a script interpreter can indicate persistence when the creator, command, execution identity, or timing deviates from an approved baseline. Task registration or SYSTEM execution alone is insufficient to label an incident malicious.
+
+**Investigation workflow:**
+1. Identify task registration through Security **4698** and TaskScheduler/Operational **106**, when available. Preserve task XML and identify creator, task name, action, trigger, and principal.
+2. Correlate task instance events **100** (start), **200** (action launch), **201** (action return), and **102** (task completion). Use task instance GUID and timestamps rather than event proximity alone.
+3. Review the failed execution context via **332**, then distinguish misconfiguration from evasion or malicious activity.
+4. Enrich with Sysmon **1** or Security **4688** process creation (where configured), command line, signer, user, and parent process. Look for unexpected network, file, and registry activity.
+5. Compare against known-good IT automation and Windows tasks. Escalate only with corroborating evidence; document disposition and verify remediation.
+
+### Read-only hunting queries
+
+```powershell
+$taskName = 'IR010-Lab-Persistence'
+$start = [datetime]'2026-11-01 01:20:00'
+$end = [datetime]'2026-11-01 01:40:00'
+
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Microsoft-Windows-TaskScheduler/Operational'
+    Id = 100,102,106,200,201,332
+    StartTime = $start
+    EndTime = $end
+} | Where-Object { $_.Message -like "*$taskName*" } |
+    Sort-Object TimeCreated |
+    Select-Object TimeCreated, Id, Message
+
+# Requires task creation auditing; absence of records is not proof of no activity.
+Get-WinEvent -FilterHashtable @{
+    LogName = 'Security'
+    Id = 4698
+    StartTime = $start
+    EndTime = $end
+} -ErrorAction SilentlyContinue |
+    Where-Object { $_.Message -like "*$taskName*" } |
+    Select-Object TimeCreated, Id, Message
+```
+
+### Production detection considerations
+
+A stronger analytic combines **task creation or modification** with unusual actions (script interpreters, encoded arguments, executables in user-writable paths), anomalous principals, and observed follow-on execution. Common false positives include Windows Update, endpoint agents, and approved administrative scripts. Task Scheduler event retention and Security audit policy affect visibility. A zero action exit code means the process reported success, not that persistence survived reboot or that an attacker achieved objectives.
+
 ## Analyst assessment and limitations
 This simulation demonstrates task configuration analysis, troubleshooting logon-context failure, process-action event correlation, return-code validation, and safe cleanup. It does **not** establish a stealthy persistence mechanism, automatic execution after reboot, elevated `RunLevel`, or malicious PowerShell behavior. `SYSTEM` identity alone is not an indicator of compromise. In production, triage should assess task provenance, author, executable signature/path, command line, creation/modification time, and expected administrative activity.
