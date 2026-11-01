@@ -66,9 +66,9 @@ The decoded statement only writes a test string to standard output. It contains 
 3. Add a CSV/JSON evidence export and a documented test suite with benign and suspicious simulations.
 4. Correlate PowerShell script-block logging (Event ID 4104) where enabled, plus relevant Sysmon network/file events.
 
-## Interview refresher — IR-009
+## Technical Defense & Analyst Discussion
 
-### 30-second project explanation
+### Investigation summary for technical discussion
 > "I built a PowerShell-based detection on a Windows 10 lab endpoint using Sysmon Event ID 1 process-creation telemetry. It flagged an encoded PowerShell command, so I investigated the full command line, the parent PowerShell process, the user context, and the integrity level. I then decoded the Base64 payload as UTF-16LE without running it. The decoded command was a harmless test, so I classified the event as a true detection but benign activity. The exercise demonstrated how to investigate an alert instead of assuming every encoded command is malicious."
 
 ### Concepts to know
@@ -80,7 +80,7 @@ The decoded statement only writes a test string to standard output. It contains 
 - **Severity:** the lab script labeled this event Medium. Severity is a triage starting point, not proof of compromise.
 - **Observed outcome:** `Write-Output "IR009-Test"` was a controlled test command. The finding is not evidence of an actual intrusion.
 
-### Likely interview questions and strong answers
+### Technical review questions and evidence-based answers
 
 **Q: Why investigate encoded PowerShell?**  
 A: Encoding can hide the intent of a command from casual inspection and is a useful hunting signal, but it is not inherently malicious. I inspect the decoded content, execution context, and surrounding telemetry before making a determination.
@@ -106,5 +106,5 @@ A: Handle alternative encoded-command argument spellings, enrich with ProcessGui
 ### Resume-ready bullet
 - Developed and validated a PowerShell endpoint-hunting detector using Sysmon Event ID 1; investigated encoded command-line execution, correlated parent-process and user context, decoded Base64 payloads safely, and documented evidence-based benign-versus-suspicious triage.
 
-### Interview caution
+### Reporting integrity
 Do not describe this as discovering real malware or a confirmed compromise. It was a **controlled detection-validation and threat-hunting lab**.
