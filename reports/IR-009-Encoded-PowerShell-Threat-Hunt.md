@@ -48,9 +48,13 @@ The decoded statement only writes a test string to standard output. It contains 
 
 ## Evidence and artifacts
 - Local detection script: `Documents/IR009-Detect-EncodedPowerShell.ps1` on CLIENT01.
-- Suggested screenshot evidence names (upload status not independently verified):
-  - `55-IR009-EncodedPowerShell-Detection.png`
-  - `56-IR009-Decoded-PowerShell-Evidence.png`
+- Verified screenshot evidence uploaded to the repository:
+  - [55 — Encoded PowerShell detection](../screenshots/55-IR009-EncodedPowerShell-Detection.png)
+  - [56 — Decoded PowerShell evidence](../screenshots/56-IR009-Decoded-PowerShell-Evidence.png)
+
+![IR-009 detection alert](../screenshots/55-IR009-EncodedPowerShell-Detection.png)
+
+![IR-009 decoded command evidence](../screenshots/56-IR009-Decoded-PowerShell-Evidence.png)
 - Screenshots observed during the lab showed the structured detection alert, the parent-process fields, and the decoded benign command.
 
 ## Analyst conclusion
