@@ -218,3 +218,5 @@ The Kerberos evidence sequence spans screenshots 11–23; screenshots 24–26 co
 All activity shown was performed against controlled lab hosts. Screenshots are the original evidence; raw Nmap/LDAP output files, a complete Kali packet capture, and firewall-rule exports are not included. No vulnerability exploitation, credential compromise, lateral movement, or production incident is asserted.
 
 **Related projects:** [Windows SOC Detection & Threat Hunting](https://github.com/kmon28/Windows-SOC-Detection-Lab) · [Network Traffic Analysis & Active Directory Investigation](https://github.com/kmon28/Network-Traffic-Analysis-Lab)
+
+- [IR-011 — PowerShell Account Discovery Detection and False-Positive Validation](reports/IR-011-PowerShell-Account-Discovery-Detection.md) — Sysmon Event 1, process ancestry, custom PowerShell detection, positive/negative control; [detection script](scripts/IR011-Detect-AccountDiscovery.ps1).
