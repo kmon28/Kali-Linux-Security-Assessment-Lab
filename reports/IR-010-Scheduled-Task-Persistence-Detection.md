@@ -69,14 +69,14 @@ The second command produced no task object, supporting removal of the registered
 
 ## Evidence inventory (screenshots 57–60)
 
-The following four screenshots were reported uploaded after the investigation. Their exact repository paths have not been independently verified, so direct image links are withheld rather than risking broken references.
+The four screenshots below are verified in the repository and linked directly to the original evidence.
 
 | Number | Evidence | Investigative value |
 |---|---|---|
-| 57 | Scheduled task execution events | Operational Events 100, 200, 201, and 102 establish successful task execution and completion |
-| 58 | Scheduled task creation, Security Event 4698 | Documents task registration in Windows Security telemetry |
-| 59 | Persistence removal verification | Shows task unregistration and absence on subsequent lookup |
-| 60 | Scheduled task registration, Operational Event 106 | Corroborates task registration in Task Scheduler telemetry |
+| [57](../screenshots/57-IR010-ScheduledTask-Execution-Events.png) | Scheduled task execution events | Operational Events 100, 200, 201, and 102 establish successful execution and completion |
+| [58](../screenshots/58-IR010-ScheduleTask-Event4698.png) | Security Event 4698 | Task creation/registration evidence |
+| [59](../screenshots/59-IR010-Persistence-Removal-Verification.png) | Persistence removal verification | Task unregistration and subsequent absence |
+| [60](../screenshots/60-IR010-ScheduleTask-Event106.png) | Task Scheduler Operational Event 106 | Task registration evidence |
 
 **Evidence handling:** The Event 4698 and Event 106 records represent different Windows logging channels, not duplicate screenshots. Execution and removal evidence are distinct. These observations support a benign lab simulation and do not establish malicious persistence.
 
