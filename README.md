@@ -220,3 +220,10 @@ All activity shown was performed against controlled lab hosts. Screenshots are t
 **Related projects:** [Windows SOC Detection & Threat Hunting](https://github.com/kmon28/Windows-SOC-Detection-Lab) · [Network Traffic Analysis & Active Directory Investigation](https://github.com/kmon28/Network-Traffic-Analysis-Lab)
 
 - [IR-011 — PowerShell Account Discovery Detection and False-Positive Validation](reports/IR-011-PowerShell-Account-Discovery-Detection.md) — Sysmon Event 1, process ancestry, custom PowerShell detection, positive/negative control; [detection script](scripts/IR011-Detect-AccountDiscovery.ps1).
+
+
+## IR-012 — SSH Authentication Failure Detection
+
+**Completed November 5, 2026.** Developed a Python regex detector for controlled SSH authentication logs and validated both positive and benign test cases. The failed-authentication sample contained **5 lines and 4 matching lines**; the clean sample contained **2 lines and 0 matches**. Matches represent log lines, not unique login attempts; the localhost simulation is not evidence of a real intrusion.
+
+**[IR-012 investigation report](reports/IR-012-SSH-Authentication-Detection.md)** · [Python detector](scripts/ssh_detector.py) · [Failed-authentication evidence](screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png) · [Timeline](screenshots/65-IR012-SSH-Authentication-Timeline.png) · [Positive test](screenshots/66-IR012-SSH-Authentication-Detection.png) · [Clean-log validation](screenshots/67-IR012-Clean-Log-Validation.png)
