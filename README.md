@@ -15,7 +15,7 @@
 
 **[IR-006 — Failed-Logon Detection and PowerShell Validation](reports/IR-006-Failed-Logon-Detection.md)** — Event 4625 investigation, source correlation, five-minute threshold testing, and reusable PowerShell detection. [View screenshot 48](screenshots/48-IR006-Reusable-Detection-Script.png).
 
-**[IR-010 — Scheduled Task Persistence Simulation and Event Correlation](reports/IR-010-Scheduled-Task-Persistence-Detection.md)** — SYSTEM-context scheduled-task execution, Task Scheduler Events 100/200/201/102, troubleshooting Event 332, and verified cleanup. Screenshots 57–58 pending repository upload.
+**[IR-010 — Scheduled Task Persistence Simulation and Event Correlation](reports/IR-010-Scheduled-Task-Persistence-Detection.md)** — SYSTEM-context scheduled-task execution, Task Scheduler Events 100/200/201/102, troubleshooting Event 332, and verified cleanup. Evidence inventory: screenshots 57–60 (task execution, Security 4698, removal verification, and Operational 106); see the case report for details.
 
 **[IR-008 — Failed-to-Successful Authentication Correlation](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md)** — PowerShell correlation of three Event 4625 failures and a subsequent Event 4624 Type 3 success from the same account/IP, with parser debugging and validated detection. [View screenshot 53](screenshots/53-IR008-Failed-Login-Detection-Alert.png).
 
@@ -169,7 +169,7 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 | 50 | IR-007 Kerberos audit validation (4769) | [View screenshot](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png) |
 | 53 | IR-008 PowerShell failed-login threshold alert | [View screenshot](screenshots/53-IR008-Failed-Login-Detection-Alert.png) |
 
-**Coverage:** Numbered screenshots 01–26 and 28–50, plus verified screenshot 53. Screenshot 27 is intentionally absent; other IR-008 image paths are pending verification and are not linked. [Browse the full screenshot directory](screenshots/).
+**Coverage:** Numbered screenshot evidence spans the original assessment and later IR investigations. Screenshot 27 is intentionally absent; see individual IR reports for later evidence references and limitations. [Browse the full screenshot directory](screenshots/).
 
 ## Technical Documentation and Refresher Notes
 
