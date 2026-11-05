@@ -168,6 +168,17 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 | 49 | IR-007 SMB network logon (4624) | [View screenshot](screenshots/49-IR007-SMB-Network-Logon.png) |
 | 50 | IR-007 Kerberos audit validation (4769) | [View screenshot](screenshots/50-IR007-Kerberos-4769-Audit-Validation.png) |
 | 53 | IR-008 PowerShell failed-login threshold alert | [View screenshot](screenshots/53-IR008-Failed-Login-Detection-Alert.png) |
+| 57 | IR-010 scheduled-task execution | [View screenshot](screenshots/57-IR010-ScheduledTask-Execution-Events.png) |
+| 58 | IR-010 task creation, Security 4698 | [View screenshot](screenshots/58-IR010-ScheduleTask-Event4698.png) |
+| 59 | IR-010 persistence removal | [View screenshot](screenshots/59-IR010-Persistence-Removal-Verification.png) |
+| 60 | IR-010 task registration, Operational 106 | [View screenshot](screenshots/60-IR010-ScheduleTask-Event106.png) |
+| 61 | IR-011 Sysmon process ancestry | [View screenshot](screenshots/61-IR011-Sysmon-Process-Ancestry.png) |
+| 62 | IR-011 account discovery alert | [View screenshot](screenshots/62-IR011-AccountDiscovery-Detection-Alert.png) |
+| 63 | IR-011 benign control | [View screenshot](screenshots/63-IR011-Benign-Control-Validation.png) |
+| 64 | IR-012 SSH failure evidence | [View screenshot](screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png) |
+| 65 | IR-012 SSH timeline | [View screenshot](screenshots/65-IR012-SSH-Authentication-Timeline.png) |
+| 66 | IR-012 SSH detector positive test | [View screenshot](screenshots/66-IR012-SSH-Authentication-Detection.png) |
+| 67 | IR-012 SSH clean-log validation | [View screenshot](screenshots/67-IR012-Clean-Log-Validation.png) |
 
 **Coverage:** Numbered screenshot evidence spans the original assessment and later IR investigations. Screenshot 27 is intentionally absent; see individual IR reports for later evidence references and limitations. [Browse the full screenshot directory](screenshots/).
 
