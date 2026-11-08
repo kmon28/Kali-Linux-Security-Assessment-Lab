@@ -83,7 +83,7 @@ The screenshots are stored in the repository's [shared screenshot archive](../sc
 
 ---
 
-## ⏱️ 5-minute refresher — review before an interview
+## ⏱️ Technical Summary & Key Takeaways
 
 **The story in 30 seconds:** I simulated a Linux persistence mechanism by registering a harmless Bash agent as a systemd service. I compared before-and-after service inventories, investigated the service configuration and execution evidence, wrote a Python detector that flagged the newly added service, preserved evidence, disabled and removed the service, and verified that systemd no longer recognized it. This was an authorized simulation, not a real compromise.
 
@@ -99,13 +99,13 @@ The screenshots are stored in the repository's [shared screenshot archive](../sc
 | **Python sets** | Compare unique entries | Flagged the newly registered service |
 | **`not-found`** | Unit no longer registered with systemd | Verified this persistence mechanism was removed |
 
-### Three things I should be able to explain without notes
+### Core Analytical Conclusions
 
 1. **Why compare two inventories?** A baseline plus a later snapshot identifies changes; a single snapshot cannot show which entries are new.
 2. **Does the Python alert prove malware?** No. It flags a change that requires analyst triage; legitimate installations can produce the same alert.
 3. **Does `not-found` prove the whole host is clean?** No. It supports removal of one unit. Other services, timers, cron jobs, processes, or persistence mechanisms would need separate investigation.
 
-### Quick self-test (answer aloud before expanding)
+### Analyst Validation Questions
 
 <details><summary>What is persistence, and what technique did IR-013 simulate?</summary>
 
@@ -176,7 +176,7 @@ systemctl is-enabled ir013-agent.service
 
 **Interpretation notes:** `systemctl disable --now` removes enablement and stops the running unit; `daemon-reload` refreshes systemd's view after changing unit files. A `not-found` result supports removal of this specific service registration. It does **not** establish that every possible persistence mechanism or malicious process is absent.
 
-## 🎯 Interview preparation — explain your decisions
+## 🎯 Engineering Decisions & Trade-offs
 
 <details>
 <summary><strong>Q1. What was the security problem you investigated?</strong></summary>
