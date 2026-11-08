@@ -108,3 +108,20 @@ A: Handle alternative encoded-command argument spellings, enrich with ProcessGui
 
 ### Reporting integrity
 Do not describe this as discovering real malware or a confirmed compromise. It was a **controlled detection-validation and threat-hunting lab**.
+
+
+## Engineering Decisions & Trade-offs
+
+**Why Sysmon Event ID 1?** Process creation telemetry records the executable, command line, parent, and identity, allowing the analyst to investigate execution context rather than relying on the encoded flag alone.
+
+**Why decode without executing?** Static UTF-16LE decoding reveals the command's intended text while avoiding unnecessary execution of an untrusted payload.
+
+**What would strengthen the detection?** Commit the original detection script after reviewing it for secrets; add benign control cases, command-line variants, and correlated file/network telemetry. This exercise proves detection of the recorded test case, not comprehensive coverage.
+
+## Five-Minute Technical Review
+
+- **Trigger:** PowerShell command line included `-EncodedCommand` in Sysmon Event ID 1.
+- **Triage:** Examine process ancestry, user, integrity, timestamp, and decoded command.
+- **Finding:** The captured payload was a benign `Write-Output` test; the detection condition was met, but malicious activity was not established.
+- **ATT&CK context:** T1059.001 (PowerShell) is relevant; encoding by itself is not an incident verdict.
+- **Analyst takeaway:** Distinguish a true-positive analytic match from a confirmed security incident.
