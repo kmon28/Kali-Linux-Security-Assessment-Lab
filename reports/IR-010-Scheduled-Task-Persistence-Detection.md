@@ -98,9 +98,9 @@ The four screenshots below are verified in the repository and linked directly to
 
 ![IR-010 removal verification](../screenshots/59-IR010-Persistence-Removal-Verification.png)
 
-## Five-minute refresher and interview preparation
+## Technical Summary & Key Takeaways
 
-**30-second interview summary:** I created a harmless scheduled task, investigated why its initial execution context failed, changed the principal to a service-account context, correlated task-registration and execution events, then removed the task and verified its absence. I did not demonstrate an automatic reboot trigger or a real compromise.
+**Executive technical recap:** I created a harmless scheduled task, investigated why its initial execution context failed, changed the principal to a service-account context, correlated task-registration and execution events, then removed the task and verified its absence. I did not demonstrate an automatic reboot trigger or a real compromise.
 
 | Evidence | What it tells an analyst |
 |---|---|
@@ -113,13 +113,13 @@ The four screenshots below are verified in the repository and linked directly to
 
 **Why troubleshoot before concluding?** A failed task launch can result from legitimate execution-context configuration. The 332 event explained the test failure and avoided mischaracterizing it as an attacker technique.
 
-<details><summary>Interview defense — What would a stronger persistence detection require?</summary>
+<details><summary>Engineering Considerations — What would a stronger persistence detection require?</summary>
 
 Correlate new or modified task registration with suspicious executable paths, interpreters, arguments, unusual principals, actual process execution, and known-good administrative schedules. Preserve task XML and distinguish manually invoked testing from a demonstrated automatic startup mechanism.
 
 </details>
 
-**Recall prompts:** Why is SYSTEM not automatically suspicious? What distinguishes task registration from successful execution? What does removal verification prove—and not prove?
+**Review questions:** Why is SYSTEM not automatically suspicious? What distinguishes task registration from successful execution? What does removal verification prove—and not prove?
 
 ## Detection engineering and SOC triage
 
