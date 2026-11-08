@@ -67,9 +67,9 @@ The script does not automatically ingest system journals or accept an arbitrary 
 | Test accepted-login messages | Checks that the detector is not triggered by all SSH activity | No matches in the two-line benign control |
 | Restore the original sample | Keeps the positive test reproducible | The initial evidence remains the test reference |
 
-## Five-minute refresher
+## Technical Summary & Key Takeaways
 
-**30-second explanation:** I used controlled Kali SSH logs to build a Python regex-based failure detector, verified that it flagged relevant authentication messages, then tested a clean sample to check for obvious false alerts. The detector identified matching log lines, not unique failed attempts. I documented that limitation rather than claiming brute force or compromise.
+**Executive technical recap:** I used controlled Kali SSH logs to build a Python regex-based failure detector, verified that it flagged relevant authentication messages, then tested a clean sample to check for obvious false alerts. The detector identified matching log lines, not unique failed attempts. I documented that limitation rather than claiming brute force or compromise.
 
 **Command to remember:** `python3 ssh_detector.py` runs the local parser against the expected adjacent `ssh-evidence.log` file. The command alone does not enable continuous monitoring or query the system journal.
 
@@ -86,7 +86,7 @@ The script does not automatically ingest system journals or accept an arbitrary 
 
 </details>
 
-## Interview defense
+## Engineering Considerations
 
 <details><summary>How would you reduce false positives?</summary>
 
