@@ -241,3 +241,12 @@ All activity shown was performed against controlled lab hosts. Screenshots are t
 **Completed November 5, 2026.** Developed a Python regex detector for controlled SSH authentication logs and validated both positive and benign test cases. The failed-authentication sample contained **5 lines and 4 matching lines**; the clean sample contained **2 lines and 0 matches**. Matches represent log lines, not unique login attempts; the localhost simulation is not evidence of a real intrusion.
 
 **[IR-012 investigation report](reports/IR-012-SSH-Authentication-Detection.md)** · [Python detector](scripts/ssh_detector.py) · [Failed-authentication evidence](screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png) · [Timeline](screenshots/65-IR012-SSH-Authentication-Timeline.png) · [Positive test](screenshots/66-IR012-SSH-Authentication-Detection.png) · [Clean-log validation](screenshots/67-IR012-Clean-Log-Validation.png)
+
+
+## IR-013 — Linux Systemd Persistence Detection and Response
+
+**Completed November 2026.** In an isolated Kali Linux lab, created a harmless systemd service (`ir013-agent.service`) to model the persistence mechanism described in MITRE ATT&CK **T1543.002**. Compared saved service inventories before and after installation, examined the unit configuration and execution timeline, recorded a SHA-256 hash, and ran a Python set-difference detector that flagged the new service. Disabled and removed the simulated service and verified containment. This is a controlled simulation, not a real intrusion; the detector compares snapshots rather than monitoring continuously.
+
+**Evidence (verified files):** [01 — Service baseline comparison](screenshots/IR013_01_Service_Baseline_Comparison.png) · [02 — Systemd persistence](screenshots/IR013_02_Systemd_Service_Persistence.png) · [03 — SHA-256](screenshots/IR013_03_Agent_SHA256_Evidence.png) · [04 — Execution timeline](screenshots/IR013_04_Agent_Execution_Timeline.png) · [06 — Containment verification](screenshots/IR013_06_Containment_Verification.png) · [Browse remaining IR-013 images](screenshots/).
+
+**Portfolio note:** The IR-013 screenshots are uploaded in the shared `screenshots/` directory. The standalone incident report and Python source were prepared locally, but their presence in this repository has not yet been verified; links to those files are therefore intentionally omitted.
