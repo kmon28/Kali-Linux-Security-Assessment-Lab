@@ -43,7 +43,9 @@ A Python comparison of the saved before-and-after service inventories produced:
 [ALERT] New service detected: ir013-agent.service
 ```
 
-The detector performs **snapshot comparison**, not continuous monitoring, and would require enrichment and allowlisting in a production environment. The additional detection-alert screenshot is present in the uploaded screenshot directory but is not embedded here until its exact filename is verified.
+The detector performs **snapshot comparison**, not continuous monitoring, and would require enrichment and allowlisting in a production environment. The original detection-alert screenshot is embedded below, showing the detector's output during the controlled test.
+
+![IR-013 screenshot 05 — Python service detection alert](../screenshots/IR013_05_Python_Service_Detection_Alert.png)
 
 ## 6. Containment and verification
 
