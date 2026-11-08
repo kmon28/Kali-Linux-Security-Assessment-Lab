@@ -76,7 +76,7 @@ The user reports uploading these screenshots. Exact repository paths and filenam
 
 ![IR-011 benign control](../screenshots/63-IR011-Benign-Control-Validation.png)
 
-## Analyst decisions and five-minute refresher
+## Analyst Decisions & Key Takeaways
 
 | Choice | Why it mattered |
 |---|---|
@@ -86,11 +86,11 @@ The user reports uploading these screenshots. Exact repository paths and filenam
 | Ordinary PowerShell control | Checks whether the detector triggers on unrelated PowerShell activity |
 | Process-scoped execution-policy bypass | Allowed a local lab test without permanently changing machine policy |
 
-**30-second interview summary:** I generated controlled PowerShell account/group discovery on a domain client, verified its Sysmon process creation event, wrote a PowerShell detector that produced one alert, and ran a benign control that produced no additional alert. I distinguished the detected behavior from malicious intent.
+**Executive technical recap:** I generated controlled PowerShell account/group discovery on a domain client, verified its Sysmon process creation event, wrote a PowerShell detector that produced one alert, and ran a benign control that produced no additional alert. I distinguished the detected behavior from malicious intent.
 
-**Recall prompts:** What does Sysmon Event 1 capture? Why investigate the parent process? Why doesn't a single negative control prove a low false-positive rate?
+**Review questions:** What does Sysmon Event 1 capture? Why investigate the parent process? Why doesn't a single negative control prove a low false-positive rate?
 
-<details><summary>Interview defense — What would you change in production?</summary>
+<details><summary>Engineering Considerations — What would you change in production?</summary>
 
 Correlate the command line with user role, parent-child lineage and related activity; support alternate discovery tools and PowerShell script block logging where available; centralize event retention; test diverse benign cases; and avoid treating a fixed Medium label as a calibrated risk score.
 
