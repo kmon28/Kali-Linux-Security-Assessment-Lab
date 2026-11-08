@@ -116,6 +116,9 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 
 ## Evidence Index
 
+**[Browse all uploaded screenshot files](screenshots/)** — this directory is the primary evidence archive, including files not listed in the numbered index below. The index highlights documented examples; it is not a complete file inventory.
+
+
 | # | Artifact | Link |
 |---|---|---|
 | 01 | Kali baseline: eth1 192.168.56.105/24 | [View screenshot](screenshots/01-Kali-Attacker-Workstation-Baseline.png) |
@@ -179,19 +182,8 @@ returned **`445/tcp filtered`**. This is consistent with blocked or otherwise fi
 | 65 | IR-012 SSH authentication timeline | [View screenshot](screenshots/65-IR012-SSH-Authentication-Timeline.png) |
 | 66 | IR-012 Python detection positive test | [View screenshot](screenshots/66-IR012-SSH-Authentication-Detection.png) |
 | 67 | IR-012 clean-log negative test | [View screenshot](screenshots/67-IR012-Clean-Log-Validation.png) |
-| 57 | IR-010 scheduled-task execution | [View screenshot](screenshots/57-IR010-ScheduledTask-Execution-Events.png) |
-| 58 | IR-010 task creation, Security 4698 | [View screenshot](screenshots/58-IR010-ScheduleTask-Event4698.png) |
-| 59 | IR-010 persistence removal | [View screenshot](screenshots/59-IR010-Persistence-Removal-Verification.png) |
-| 60 | IR-010 task registration, Operational 106 | [View screenshot](screenshots/60-IR010-ScheduleTask-Event106.png) |
-| 61 | IR-011 Sysmon process ancestry | [View screenshot](screenshots/61-IR011-Sysmon-Process-Ancestry.png) |
-| 62 | IR-011 account discovery alert | [View screenshot](screenshots/62-IR011-AccountDiscovery-Detection-Alert.png) |
-| 63 | IR-011 benign control | [View screenshot](screenshots/63-IR011-Benign-Control-Validation.png) |
-| 64 | IR-012 SSH failure evidence | [View screenshot](screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png) |
-| 65 | IR-012 SSH timeline | [View screenshot](screenshots/65-IR012-SSH-Authentication-Timeline.png) |
-| 66 | IR-012 SSH detector positive test | [View screenshot](screenshots/66-IR012-SSH-Authentication-Detection.png) |
-| 67 | IR-012 SSH clean-log validation | [View screenshot](screenshots/67-IR012-Clean-Log-Validation.png) |
 
-**Coverage:** All 61 distinct screenshot file paths linked from this README were checked against the repository, including links in the walkthrough and investigation summaries outside this index. Screenshot 27 is intentionally absent; screenshots 51–52 and 54–56 are not indexed here because their exact filenames were not verified. See individual IR reports for evidence context and limitations. [Browse the full screenshot directory](screenshots/).
+**Evidence note:** The numbered index is selective rather than a full inventory. Screenshot 27 was intentionally omitted from the documented investigation. Numbers 51–52 and 54–56 are not indexed here; their presence and filenames require separate verification. See the [complete screenshot directory](screenshots/) and individual investigation reports for additional evidence.
 
 ## Technical Documentation and Refresher Notes
 
