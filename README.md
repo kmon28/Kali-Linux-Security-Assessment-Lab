@@ -37,6 +37,12 @@
 
 **Outcome and relevance:** Shows practical SOC triage, log correlation, detection engineering, security validation, and incident documentation. All adversarial behavior described as simulation is controlled lab activity, not a claim of a real-world compromise. Some older reports still need the same modernized inline evidence and refresher treatment.
 
+### Documentation and technical review
+
+- **[Professional case-study standard](docs/PORTFOLIO-REPORT-STANDARD.md):** consistent evidence-first investigation format, technical rationale, limitations and verified outcomes.
+- **[Technical study guide](docs/TECHNICAL-STUDY-GUIDE.md):** separate active-recall questions, command explanations and preparation notes.
+
+
 ## Executive Summary
 
 Conducted a controlled Kali Linux security assessment against Windows lab systems on `192.168.56.0/24`. The workflow progressed from **workstation validation → host discovery → service enumeration → SMB and LDAP review → privileged group inspection → controlled failed authentication → Windows log correlation → SMB access retest**.
