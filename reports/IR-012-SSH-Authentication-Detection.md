@@ -39,6 +39,67 @@ The script does not automatically ingest system journals or accept an arbitrary 
 - [67 — Clean-log negative test](../screenshots/67-IR012-Clean-Log-Validation.png)
 - [Python detector](../scripts/ssh_detector.py)
 
+### Visual evidence and analyst interpretation
+
+**Screenshot 64 — Controlled SSH authentication evidence.** This records the source material inspected by the detector; the loopback address indicates a local test, not an external attack.
+
+![IR-012 original SSH failure evidence](../screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png)
+
+**Screenshot 65 — Authentication timeline.** Read the log entries in sequence and distinguish authentication messages from connection/session messages before counting attempts.
+
+![IR-012 original SSH authentication timeline](../screenshots/65-IR012-SSH-Authentication-Timeline.png)
+
+**Screenshot 66 — Positive detection.** The Python script matched four of five log lines. Because multiple messages can refer to one attempt, four matched lines are not necessarily four failed logins.
+
+![IR-012 original Python detector positive test](../screenshots/66-IR012-SSH-Authentication-Detection.png)
+
+**Screenshot 67 — Negative control.** Two benign entries produced zero matches. This verifies the behavior on the tested sample, not a production-wide false-positive rate.
+
+![IR-012 original benign-log validation](../screenshots/67-IR012-Clean-Log-Validation.png)
+
+## Why the investigation steps mattered
+
+| Decision | Reason | What the result can establish |
+|---|---|---|
+| Preserve a controlled SSH sample | Provides repeatable input for a detection test | The detector was evaluated on known data |
+| Match several failure-related phrases | Covers different SSH authentication log wording | Four lines contained one of the target patterns |
+| Inspect each matched line | Prevents mistaking matching messages for unique attempts | A connection-close message also matched `invalid user` |
+| Test accepted-login messages | Checks that the detector is not triggered by all SSH activity | No matches in the two-line benign control |
+| Restore the original sample | Keeps the positive test reproducible | The initial evidence remains the test reference |
+
+## Five-minute refresher
+
+**30-second explanation:** I used controlled Kali SSH logs to build a Python regex-based failure detector, verified that it flagged relevant authentication messages, then tested a clean sample to check for obvious false alerts. The detector identified matching log lines, not unique failed attempts. I documented that limitation rather than claiming brute force or compromise.
+
+**Command to remember:** `python3 ssh_detector.py` runs the local parser against the expected adjacent `ssh-evidence.log` file. The command alone does not enable continuous monitoring or query the system journal.
+
+**Three self-check questions:**
+1. Why might a single SSH connection produce multiple matching log entries?
+2. Why is a two-line negative test useful but insufficient to estimate false-positive rates?
+3. What fields would you use to aggregate failures into unique sessions and time windows?
+
+<details><summary>Suggested answers</summary>
+
+1. Authentication, invalid-account, and connection-close messages may all describe the same connection.
+2. It checks behavior on a known clean input but does not represent diverse production log formats.
+3. Timestamp, source address, account, SSH daemon process ID, and where available connection/session identifiers.
+
+</details>
+
+## Interview defense
+
+<details><summary>How would you reduce false positives?</summary>
+
+Parse event types and structured fields rather than broad substring matches, correlate messages by session, exclude expected test activity, and test against larger benign datasets. Retain raw lines for auditability.
+
+</details>
+
+<details><summary>How would you evolve this into a SOC alert?</summary>
+
+Collect logs centrally, normalize SSH event fields, aggregate by account/source over a defined time window, set thresholds, enrich with asset context, and validate against both simulated attacks and benign activity. Those improvements are proposals, not features of the current script.
+
+</details>
+
 ## Limitations and next improvements
 - Regex matches individual lines, not unique sessions; deduplicate by process ID, source, account, and time window.
 - No rate threshold, aggregation, severity classification, structured JSON output, or automated tests yet.
