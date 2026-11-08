@@ -62,6 +62,40 @@ The analytic queries Sysmon process creation events from the preceding 24 hours,
 
 The user reports uploading these screenshots. Exact repository paths and filename extensions were not independently verified here, so broken image links are intentionally avoided.
 
+## Original visual evidence
+
+**61 — Sysmon Event 1 and process ancestry.** Confirms the process, user, parent and command-line context needed for a credible discovery investigation.
+
+![IR-011 Sysmon process ancestry](../screenshots/61-IR011-Sysmon-Process-Ancestry.png)
+
+**62 — Custom detection alert.** Shows the single medium-severity alert produced by the account-discovery simulation.
+
+![IR-011 account discovery detection](../screenshots/62-IR011-AccountDiscovery-Detection-Alert.png)
+
+**63 — Benign control validation.** The detector still reported one alert after `Get-Date` / `Write-Output`, indicating no additional alert for that specific control.
+
+![IR-011 benign control](../screenshots/63-IR011-Benign-Control-Validation.png)
+
+## Analyst decisions and five-minute refresher
+
+| Choice | Why it mattered |
+|---|---|
+| Sysmon Event 1 | Captures process creation and command-line context |
+| Inspect parent image and ProcessGuid | Supports process-lineage pivots rather than judging a command in isolation |
+| Controlled discovery commands | Provides a known positive case for validating the analytic |
+| Ordinary PowerShell control | Checks whether the detector triggers on unrelated PowerShell activity |
+| Process-scoped execution-policy bypass | Allowed a local lab test without permanently changing machine policy |
+
+**30-second interview summary:** I generated controlled PowerShell account/group discovery on a domain client, verified its Sysmon process creation event, wrote a PowerShell detector that produced one alert, and ran a benign control that produced no additional alert. I distinguished the detected behavior from malicious intent.
+
+**Recall prompts:** What does Sysmon Event 1 capture? Why investigate the parent process? Why doesn't a single negative control prove a low false-positive rate?
+
+<details><summary>Interview defense — What would you change in production?</summary>
+
+Correlate the command line with user role, parent-child lineage and related activity; support alternate discovery tools and PowerShell script block logging where available; centralize event retention; test diverse benign cases; and avoid treating a fixed Medium label as a calibrated risk score.
+
+</details>
+
 ## Limitations and production hardening
 - Only **one positive and one negative** test were observed; no measured detection sensitivity, precision, or false-positive rate is claimed.
 - Command-line string matching can miss alternate discovery mechanisms, renamed executables, indirect execution, and obfuscation.
