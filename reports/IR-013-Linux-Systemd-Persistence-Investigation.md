@@ -83,6 +83,58 @@ The screenshots are stored in the repository's [shared screenshot archive](../sc
 
 ---
 
+## ⏱️ 5-minute refresher — review before an interview
+
+**The story in 30 seconds:** I simulated a Linux persistence mechanism by registering a harmless Bash agent as a systemd service. I compared before-and-after service inventories, investigated the service configuration and execution evidence, wrote a Python detector that flagged the newly added service, preserved evidence, disabled and removed the service, and verified that systemd no longer recognized it. This was an authorized simulation, not a real compromise.
+
+| Remember | What it means | Why I used it |
+|---|---|---|
+| **systemd service** | Linux mechanism for managing services and startup | Simulated persistence |
+| **baseline** | Snapshot of known state | Established what changed |
+| **287 → 288** | Service inventory grew by one entry | Identified the new unit |
+| **`systemctl`** | Inspect and manage services | Investigated and contained the unit |
+| **`journalctl`** | Read systemd journal events | Checked execution evidence |
+| **`stat`** | Read file metadata and timestamps | Supported the timeline |
+| **`sha256sum`** | Calculate a content fingerprint | Preserved file integrity evidence |
+| **Python sets** | Compare unique entries | Flagged the newly registered service |
+| **`not-found`** | Unit no longer registered with systemd | Verified this persistence mechanism was removed |
+
+### Three things I should be able to explain without notes
+
+1. **Why compare two inventories?** A baseline plus a later snapshot identifies changes; a single snapshot cannot show which entries are new.
+2. **Does the Python alert prove malware?** No. It flags a change that requires analyst triage; legitimate installations can produce the same alert.
+3. **Does `not-found` prove the whole host is clean?** No. It supports removal of one unit. Other services, timers, cron jobs, processes, or persistence mechanisms would need separate investigation.
+
+### Quick self-test (answer aloud before expanding)
+
+<details><summary>What is persistence, and what technique did IR-013 simulate?</summary>
+
+Persistence is a mechanism that allows code or access to survive a restart or otherwise recur. This lab simulated a systemd service registration, MITRE ATT&CK T1543.002.
+
+</details>
+
+<details><summary>What exactly did the Python detector compare?</summary>
+
+Saved before-and-after service inventory files. It used set difference to identify service names present only in the later snapshot.
+
+</details>
+
+<details><summary>Why preserve evidence before deleting the service?</summary>
+
+Because removal changes the system. Keeping the unit configuration and supporting logs helps reconstruct what happened and explain the response.
+
+</details>
+
+<details><summary>How would I improve the lab for a real SOC?</summary>
+
+Add continuous collection, metadata enrichment, process/network correlation, allowlisting, centralized logging, tested alert thresholds, and coverage for other persistence techniques.
+
+</details>
+
+**Memory cue:** **Baseline → Change → Investigate → Detect → Preserve → Contain → Verify → Report.**
+
+---
+
 ## 🧠 Why each investigative decision mattered
 
 | Action | Technical reason | How to explain it simply |
