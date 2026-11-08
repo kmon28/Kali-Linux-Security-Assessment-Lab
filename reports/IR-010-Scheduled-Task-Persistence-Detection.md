@@ -80,6 +80,47 @@ The four screenshots below are verified in the repository and linked directly to
 
 **Evidence handling:** The Event 4698 and Event 106 records represent different Windows logging channels, not duplicate screenshots. Execution and removal evidence are distinct. These observations support a benign lab simulation and do not establish malicious persistence.
 
+## Inline investigation evidence
+
+**57 — Execution chain.** Task Scheduler Operational events support task start, action launch, action completion, and task completion. Return code zero describes process completion, not maliciousness.
+
+![IR-010 execution event evidence](../screenshots/57-IR010-ScheduledTask-Execution-Events.png)
+
+**58 — Security Event 4698.** Registration telemetry provides a separate source for reviewing the creation of the scheduled task.
+
+![IR-010 task creation Security event](../screenshots/58-IR010-ScheduleTask-Event4698.png)
+
+**60 — Task Scheduler Event 106.** The Operational channel independently documents registration.
+
+![IR-010 Task Scheduler registration event](../screenshots/60-IR010-ScheduleTask-Event106.png)
+
+**59 — Removal verification.** The follow-up lookup produced no matching task after unregistration.
+
+![IR-010 removal verification](../screenshots/59-IR010-Persistence-Removal-Verification.png)
+
+## Five-minute refresher and interview preparation
+
+**30-second interview summary:** I created a harmless scheduled task, investigated why its initial execution context failed, changed the principal to a service-account context, correlated task-registration and execution events, then removed the task and verified its absence. I did not demonstrate an automatic reboot trigger or a real compromise.
+
+| Evidence | What it tells an analyst |
+|---|---|
+| Security 4698 / Task Scheduler 106 | Task registration activity, when logging is enabled |
+| Task Scheduler 100 / 200 | Task start and action launch |
+| Task Scheduler 201 / 102 | Action and task completion |
+| Event 332 | The observed launch-condition failure |
+| `LastTaskResult: 0` | The action reported successful completion |
+| Empty `Get-ScheduledTask` lookup | The named task was no longer registered |
+
+**Why troubleshoot before concluding?** A failed task launch can result from legitimate execution-context configuration. The 332 event explained the test failure and avoided mischaracterizing it as an attacker technique.
+
+<details><summary>Interview defense — What would a stronger persistence detection require?</summary>
+
+Correlate new or modified task registration with suspicious executable paths, interpreters, arguments, unusual principals, actual process execution, and known-good administrative schedules. Preserve task XML and distinguish manually invoked testing from a demonstrated automatic startup mechanism.
+
+</details>
+
+**Recall prompts:** Why is SYSTEM not automatically suspicious? What distinguishes task registration from successful execution? What does removal verification prove—and not prove?
+
 ## Detection engineering and SOC triage
 
 **Analytic hypothesis:** A newly registered scheduled task invoking a script interpreter can indicate persistence when the creator, command, execution identity, or timing deviates from an approved baseline. Task registration or SYSTEM execution alone is insufficient to label an incident malicious.
