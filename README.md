@@ -25,6 +25,18 @@
 
 **Quick navigation:** [Results](#investigation-results) · [Environment](#lab-environment) · [Evidence](#evidence-index) · [IR-006](reports/IR-006-Failed-Logon-Detection.md) · [IR-007](reports/IR-007-SMB-Kerberos-Audit-Recovery.md) · [IR-008](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md) · [Detailed report](reports/assessment-findings.md) · [Command refresher](commands/command-reference.md) · [Kerberos report](reports/IR-002-kerberos-rc4-aes256-hardening.md) · [Kerberos detection guide](docs/kerberos-detection-engineering.md) · [IR-003 SMB authentication report](reports/IR-003-SMB-Authentication-Failure.md) · [IR-003 study notes](docs/IR-003-Study-Notes.md) · [IR-003 interview review](docs/IR-003-Interview-Review.md)
 
+## 🧭 About this repository — recruiter and technical reviewer guide
+
+**Purpose:** A collection of authorized offensive-security validation and blue-team investigations in a controlled VirtualBox lab. The project demonstrates how to move from a security observation to corroborated evidence, detection logic, defensive remediation, and a defensible incident report.
+
+**Environment and tools:** Kali Linux; Windows Server 2022 Active Directory domain controller; Windows 10 domain client; Nmap, Wireshark, Windows Security logs, PowerShell, Linux systemd/journalctl and Python. The laptop has limited VM capacity, so not every machine is running simultaneously.
+
+**What is documented:** Reconnaissance and service enumeration; SMB/NTLM and Kerberos analysis; Active Directory membership monitoring; failed/successful authentication correlation; firewall validation; scheduled-task and Linux systemd persistence simulations; Linux SSH and PowerShell discovery investigations. The linked case reports contain the specific evidence and limitations for each exercise.
+
+**How to review:** Start with the [IR-013 illustrated case study](reports/IR-013-Linux-Systemd-Persistence-Investigation.md) to see the investigation → evidence → detection → containment → interview-refresher format. Then use the individual reports linked above for other techniques and the [report quality standard](docs/PORTFOLIO-REPORT-STANDARD.md) for the intended consistent structure.
+
+**Outcome and relevance:** Shows practical SOC triage, log correlation, detection engineering, security validation, and incident documentation. All adversarial behavior described as simulation is controlled lab activity, not a claim of a real-world compromise. Some older reports still need the same modernized inline evidence and refresher treatment.
+
 ## Executive Summary
 
 Conducted a controlled Kali Linux security assessment against Windows lab systems on `192.168.56.0/24`. The workflow progressed from **workstation validation → host discovery → service enumeration → SMB and LDAP review → privileged group inspection → controlled failed authentication → Windows log correlation → SMB access retest**.
