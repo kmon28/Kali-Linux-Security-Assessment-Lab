@@ -81,7 +81,11 @@ The six screenshots below are verified files in the repository's `screenshots/` 
 - [Screenshot 73 — Containment Verification](../screenshots/IR014_73_Containment_Verification.png)
 - [Screenshot 74 — Python Network Detection](../screenshots/IR014_74_Python_Network_Detection.png)
 - Local text evidence: `final-detection-results.txt` and `post-containment-results.txt` (not confirmed uploaded to GitHub).
-- Original Python script: `~/IR014/scripts/network_detector.py` (local Kali file; source not yet confirmed in repository). A reconstructed example should not be presented as the original executed script.
+- [Python detector reference implementation](../scripts/IR014_network_detector.py) — authored for the portfolio based on verified IR-014 behavior; **not** claimed to be the exact original Kali source. Original local path: `~/IR014/scripts/network_detector.py`.
+
+## Reproducible detection script
+
+The repository includes [a complete Python 3 reference implementation](../scripts/IR014_network_detector.py) using `psutil.net_connections(kind="inet")`, local/remote port matching, process metadata, and explicit `TIME_WAIT` caveats. Run it in the authorized Kali lab with `sudo python3 scripts/IR014_network_detector.py` after installing `psutil`. Its code was authored for this portfolio after the exercise, so its exact output formatting has **not** been verified against the original lab script. The original local script remains the source of truth for historical execution.
 
 ## Analyst decision
 Close the **controlled lab test** as successful. Do not interpret a disappearing alert as proof of host safety in a real incident. A real SOC case would also investigate process ancestry, user activity, persistence, destination reputation, data transfer, and reappearance before incident closure.
