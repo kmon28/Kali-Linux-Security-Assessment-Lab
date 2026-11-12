@@ -32,20 +32,56 @@ Build and validate a Python network-connection detector that identifies connecti
 ## Outcome
 The detector correctly identified both endpoints of the controlled Netcat connection, enriched alerts with process metadata, and stopped alerting after the simulated activity and TCP cleanup completed. The exercise demonstrates detection rule iteration, process attribution, false-positive awareness, evidence preservation, and post-activity validation.
 
-## Embedded visual evidence
+## Embedded visual evidence — chronological investigation
 
-### Detection and process attribution — Screenshot 74
+The six screenshots below are verified files in the repository's `screenshots/` directory. They are placed beside the corresponding investigative phase; captions describe their role without treating the screenshots as proof of an actual intrusion.
 
-![IR-014 Python detector: Netcat port 9090 alerts, process attribution and MEDIUM severity](../screenshots/IR014_74_Python_Network_Detection.png)
+### 1. Network baseline — Screenshot 69
 
-*Screenshot 74: controlled loopback Netcat traffic detected on monitored port 9090, with process and severity context. The screenshot is supporting evidence, not proof of a real intrusion.*
+![IR-014 screenshot 69: network baseline](../screenshots/IR014_69_Network_Baseline.png)
 
-The screenshot is embedded directly in this report so a reviewer can evaluate the finding without separately browsing the screenshot directory. If GitHub does not render the image, confirm the exact uploaded filename and capitalization in `screenshots/`.
+*Baseline: document the observed network state before evaluating the controlled test traffic. A baseline makes later differences easier to interpret.*
+
+### 2. Listener and process ancestry — Screenshot 70
+
+![IR-014 screenshot 70: listener process ancestry](../screenshots/IR014_70_Listener_Process_Ancestry.png)
+
+*Listener attribution: connect the observed listening socket to its owning process and parent-process context. Process ancestry helps distinguish an authorized test from unexplained activity.*
+
+### 3. Process execution context — Screenshot 71
+
+![IR-014 screenshot 71: process execution context](../screenshots/IR014_71_Process_Execution_Context.png)
+
+*Execution context: inspect the process identity and execution details associated with the lab traffic. A familiar binary name alone does not establish that activity is benign.*
+
+### 4. HTTP request and log correlation — Screenshot 72
+
+![IR-014 screenshot 72: HTTP request and log correlation](../screenshots/IR014_72_HTTP_Request_Log_Correlation.png)
+
+*Correlation evidence: relate the captured request/log observations to the investigation timeline. This is contextual evidence; the port-9090 Netcat detector findings should not be misrepresented as proof that an HTTP request was malicious.*
+
+### 5. Containment verification — Screenshot 73
+
+![IR-014 screenshot 73: containment verification](../screenshots/IR014_73_Containment_Verification.png)
+
+*Post-activity verification: check whether the test activity has ended and distinguish residual TCP state from an actively running connection. In this lab, a transient TIME_WAIT record preceded the later zero-alert scan.*
+
+### 6. Python network detector — Screenshot 74
+
+![IR-014 screenshot 74: Python network detection](../screenshots/IR014_74_Python_Network_Detection.png)
+
+*Detector validation: the custom Python/psutil scan identified port-9090 activity, associated Netcat processes with the observations, and applied the lab-defined MEDIUM triage label. The alert is not evidence of a confirmed compromise.*
 
 ## Evidence inventory
-- Screenshot 74: [`IR014_74_Python_Network_Detection.png`](../screenshots/IR014_74_Python_Network_Detection.png) (upload reported by lab operator; exact GitHub path still requires verification).
-- Local text evidence: `final-detection-results.txt` and `post-containment-results.txt` (not yet confirmed uploaded to GitHub).
-- Python script: `~/IR014/scripts/network_detector.py` (local Kali file; do not substitute reconstructed source for the original without verification).
+
+- [Screenshot 69 — Network Baseline](../screenshots/IR014_69_Network_Baseline.png)
+- [Screenshot 70 — Listener Process Ancestry](../screenshots/IR014_70_Listener_Process_Ancestry.png)
+- [Screenshot 71 — Process Execution Context](../screenshots/IR014_71_Process_Execution_Context.png)
+- [Screenshot 72 — HTTP Request Log Correlation](../screenshots/IR014_72_HTTP_Request_Log_Correlation.png)
+- [Screenshot 73 — Containment Verification](../screenshots/IR014_73_Containment_Verification.png)
+- [Screenshot 74 — Python Network Detection](../screenshots/IR014_74_Python_Network_Detection.png)
+- Local text evidence: `final-detection-results.txt` and `post-containment-results.txt` (not confirmed uploaded to GitHub).
+- Original Python script: `~/IR014/scripts/network_detector.py` (local Kali file; source not yet confirmed in repository). A reconstructed example should not be presented as the original executed script.
 
 ## Analyst decision
 Close the **controlled lab test** as successful. Do not interpret a disappearing alert as proof of host safety in a real incident. A real SOC case would also investigate process ancestry, user activity, persistence, destination reputation, data transfer, and reappearance before incident closure.
