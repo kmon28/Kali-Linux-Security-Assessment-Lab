@@ -32,8 +32,18 @@ Build and validate a Python network-connection detector that identifies connecti
 ## Outcome
 The detector correctly identified both endpoints of the controlled Netcat connection, enriched alerts with process metadata, and stopped alerting after the simulated activity and TCP cleanup completed. The exercise demonstrates detection rule iteration, process attribution, false-positive awareness, evidence preservation, and post-activity validation.
 
+## Embedded visual evidence
+
+### Detection and process attribution — Screenshot 74
+
+![IR-014 Python detector: Netcat port 9090 alerts, process attribution and MEDIUM severity](../screenshots/IR014_74_Python_Network_Detection.png)
+
+*Screenshot 74: controlled loopback Netcat traffic detected on monitored port 9090, with process and severity context. The screenshot is supporting evidence, not proof of a real intrusion.*
+
+The screenshot is embedded directly in this report so a reviewer can evaluate the finding without separately browsing the screenshot directory. If GitHub does not render the image, confirm the exact uploaded filename and capitalization in `screenshots/`.
+
 ## Evidence inventory
-- Local screenshot confirmed saved: `IR014_74_Python_Network_Detection.png` (not yet confirmed uploaded to GitHub).
+- Screenshot 74: [`IR014_74_Python_Network_Detection.png`](../screenshots/IR014_74_Python_Network_Detection.png) (upload reported by lab operator; exact GitHub path still requires verification).
 - Local text evidence: `final-detection-results.txt` and `post-containment-results.txt` (not yet confirmed uploaded to GitHub).
 - Python script: `~/IR014/scripts/network_detector.py` (local Kali file; do not substitute reconstructed source for the original without verification).
 
