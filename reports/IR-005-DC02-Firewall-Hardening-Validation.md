@@ -1,5 +1,16 @@
 # DC02 Firewall Hardening and Kali Connectivity Validation
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A controlled network assessment checked how firewall settings affected connectivity between a Kali workstation and a Windows domain controller. The report separates observed connection results from settings that would need independent verification.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Windows firewall validation, network reachability, Kali Linux, defensive retesting.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Evidence:** Screenshots 32–35 (verified in the GitHub repository).  
 **Environment:** Windows Server 2022 domain controller DC02 (`192.168.56.101`), Kali Linux (`192.168.56.105`), `lab.local`, VirtualBox.
 
@@ -18,25 +29,25 @@ Document a controlled firewall configuration and network connectivity validation
 
 ### 32 — Firewall baseline
 
-![DC02 firewall baseline](../screenshots/32-DC02-Firewall-Baseline.png)
+[![DC02 firewall baseline](../screenshots/32-DC02-Firewall-Baseline.png)](../screenshots/32-DC02-Firewall-Baseline.png)
 
 The initial PowerShell checks showed enabled Domain, Private, and Public firewall profiles, with `DefaultInboundAction` displayed as `NotConfigured` in the queried output. The VM's adapters appeared as Public in the captured network profile check. This is configuration context, **not** evidence that Windows Firewall was disabled or that traffic was permitted.
 
 ### 33 — Firewall hardening
 
-![DC02 firewall hardening](../screenshots/33-DC02-Firewall-Hardening.png)
+[![DC02 firewall hardening](../screenshots/33-DC02-Firewall-Hardening.png)](../screenshots/33-DC02-Firewall-Hardening.png)
 
 This artifact records the configuration stage. Any claim that a particular firewall rule blocked traffic should be tied to the actual rule name, direction, profile, protocol, port, and source address shown in the evidence. Merely enabling a firewall profile does not demonstrate that a specific connection was denied.
 
 ### 34 — Kali connectivity validation
 
-![Kali to DC02 connectivity validation](../screenshots/34-Kali-DC02-Connectivity-Validation.png)
+[![Kali to DC02 connectivity validation](../screenshots/34-Kali-DC02-Connectivity-Validation.png)](../screenshots/34-Kali-DC02-Connectivity-Validation.png)
 
 Kali is the authorized assessment source (`192.168.56.105`); DC02 is the target (`192.168.56.101`). The network test helps evaluate the reachability of the domain controller after policy changes. A ping or port scan establishes the observed connectivity state only for the tested protocol and time.
 
 ### 35 — DC02 firewall verification
 
-![DC02 firewall verification](../screenshots/35-DC02-Firewall-Verfication.png)
+[![DC02 firewall verification](../screenshots/35-DC02-Firewall-Verfication.png)](../screenshots/35-DC02-Firewall-Verfication.png)
 
 This is the final captured DC02-side verification artifact. Reviewers should compare it against screenshot 32 and the actual hardening commands in screenshot 33 before asserting a specific policy change or successful block.
 
