@@ -58,6 +58,17 @@
 
 **Code provenance:** Original detection and response behavior was exercised in the hands-on lab and documented in the incident reports. Where a GitHub script was reconstructed later, it is identified as a *reference implementation*, not represented as a byte-for-byte recovery of the original VM file. Historical lab validation is credited without claiming that every reconstructed file was executed on the original VM.
 
+## Analyst review: evidence to response
+
+**Network forensics:** [IR-004 SMB/NTLM](reports/IR-004-SMB-NTLM-Network-Forensics.md) — distinguish authentication outcomes visible in packet data.
+
+**Identity correlation:** [IR-008 failed-to-successful logons](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md) — follow account, source and timestamp correlation, including parser troubleshooting.
+
+**Linux persistence:** [IR-015 investigation](reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) — compare benign and suspicious user-service behavior, then review detection, cleanup and recovery evidence.
+
+**Code review:** [IR-015 reference implementation](scripts/IR-015/) is reconstructed from documented behavior. Original lab results are credited, but the published reference code is not described as a byte-for-byte original.
+
+
 ## Executive Summary
 
 Conducted a controlled Kali Linux security assessment against Windows lab systems on `192.168.56.0/24`. The workflow progressed from **workstation validation → host discovery → service enumeration → SMB and LDAP review → privileged group inspection → controlled failed authentication → Windows log correlation → SMB access retest**.
