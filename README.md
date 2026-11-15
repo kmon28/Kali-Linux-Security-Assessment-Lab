@@ -61,6 +61,24 @@
 
 **Code provenance:** Original detection and response behavior was exercised in the hands-on lab and documented in the incident reports. Where a GitHub script was reconstructed later, it is identified as a *reference implementation*, not represented as a byte-for-byte recovery of the original VM file. Historical lab validation is credited without claiming that every reconstructed file was executed on the original VM.
 
+## Hiring-manager review — evidence mapped to security roles
+
+This portfolio is most relevant to **SOC Analyst, Cybersecurity Analyst, Security Operations, IAM/Windows Security, and junior detection engineering** roles. It demonstrates practical laboratory capability, not production SOC tenure.
+
+| Competency hiring teams assess | Case study | Evidence-backed capability |
+| --- | --- | --- |
+| Security monitoring and alert triage | [IR-008](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md), [IR-012](reports/IR-012-SSH-Authentication-Detection.md) | Windows authentication correlation and Linux SSH failure detection |
+| Incident investigation and response | [IR-013](reports/IR-013-Linux-Systemd-Persistence-Investigation.md), [IR-015](reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) | Service baselines, process/log correlation, targeted containment and verification |
+| Detection engineering and tuning | [IR-011](reports/IR-011-PowerShell-Account-Discovery-Detection.md), [IR-014](reports/IR-014-python-network-detection.md), [IR-015](reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) | Script-based indicators, test cases, benign controls, and documented false-positive limits |
+| Identity and Windows security | [IR-002](reports/IR-002-kerberos-rc4-aes256-hardening.md), [IR-005](reports/IR-005-AD-Privilege-Escalation-Investigation.md) | Kerberos event interpretation and privileged-group change verification |
+| Network and protocol forensics | [IR-004](reports/IR-004-SMB-NTLM-Network-Forensics.md) | SMB2/NTLMSSP authentication outcomes and packet-level reasoning |
+| Risk-based assessment | [Assessment 001](reports/ASSESSMENT-001-ad-exposure-and-identity-review.md) | Service exposure, SMB signing, and access-control review without inventing vulnerabilities |
+| Communication and interview readiness | [Technical interview guide](docs/TECHNICAL-STUDY-GUIDE.md) | Explain observations, competing explanations, evidence, and limitations |
+
+**Evidence standard:** Original screenshots and reports document historical exercises. Reference/reconstructed scripts are labeled as such and must not be represented as the exact source used in the original test. These exercises do not establish real-world attacker activity, enterprise-scale operations, or a fully cleared host.
+
+**Five-minute reviewer route:** [IR-015 response lifecycle](reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) → [IR-008 authentication correlation](reports/IR-008-Failed-to-Successful-Authentication-Correlation.md) → [IR-004 network forensics](reports/IR-004-SMB-NTLM-Network-Forensics.md) → [interview guide](docs/TECHNICAL-STUDY-GUIDE.md).
+
 ## Analyst review: evidence to response
 
 **Network forensics:** [IR-004 SMB/NTLM](reports/IR-004-SMB-NTLM-Network-Forensics.md) — distinguish authentication outcomes visible in packet data.
