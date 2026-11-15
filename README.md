@@ -56,6 +56,8 @@
 - **[Technical study guide](docs/TECHNICAL-STUDY-GUIDE.md):** separate active-recall questions, command explanations and preparation notes.
 
 
+**Code provenance:** Original detection and response behavior was exercised in the hands-on lab and documented in the incident reports. Where a GitHub script was reconstructed later, it is identified as a *reference implementation*, not represented as a byte-for-byte recovery of the original VM file. Historical lab validation is credited without claiming that every reconstructed file was executed on the original VM.
+
 ## Executive Summary
 
 Conducted a controlled Kali Linux security assessment against Windows lab systems on `192.168.56.0/24`. The workflow progressed from **workstation validation → host discovery → service enumeration → SMB and LDAP review → privileged group inspection → controlled failed authentication → Windows log correlation → SMB access retest**.
