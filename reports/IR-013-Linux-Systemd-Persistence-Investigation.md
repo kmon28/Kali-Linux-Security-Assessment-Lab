@@ -90,7 +90,7 @@ The simulated service was disabled and stopped with `systemctl disable --now`, i
 
 ## Evidence and reproducibility
 
-The screenshots are stored in the repository's [shared screenshot archive](../screenshots/). The locally prepared Python detector, before/after inventories, and longer incident report should be uploaded separately for complete reproducibility. This report summarizes the verified exercise and does not substitute reconstructed source code for the original files.
+The screenshots are stored in the repository's [shared screenshot archive](../screenshots/). A [reconstructed Python comparison reference](../scripts/IR-013-detect-services-reconstructed.py) is available, but it is **not the original executed detector**. The original before/after inventory text files are not committed here, so the reference cannot reproduce the historical alert from this repository alone. This report and the original screenshots document the exercise without presenting reconstructed code as the original VM source.
 
 ---
 
