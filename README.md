@@ -1,5 +1,8 @@
 # Kali Linux Security Assessment & Blue-Team Investigation
 
+**Reviewer quick reference:** [Incident review](docs/incident-review-quick-reference.md) — a concise evidence-first guide to interpreting findings, alternative explanations, and limitations.
+
+
 
 ## Featured Investigations — 60-Second Review
 
