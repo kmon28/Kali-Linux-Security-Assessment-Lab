@@ -1,5 +1,16 @@
 # IR-009 — Encoded PowerShell Execution: Endpoint Threat Hunt
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A controlled encoded PowerShell command was investigated using Sysmon process evidence and decoded to understand what actually ran.
+
+**Why a security team cares:** The investigation demonstrates evidence-based analysis, a verified outcome, and the distinction between a detection indicator and proof of malicious intent.
+
+**Skills demonstrated:** Sysmon Event 1, PowerShell, process ancestry, encoded-command analysis.
+
+**Reader's guide:** Start with the findings below, then inspect the original linked evidence. This is authorized lab activity, not a claim of an actual compromise.
+
+
 ## Executive summary
 A controlled Windows endpoint investigation on CLIENT01 validated detection of encoded PowerShell execution using Sysmon process-creation telemetry. A custom PowerShell script identified an Event ID 1 process whose command line contained `-EncodedCommand`. Investigation established that the parent was PowerShell running under `LAB\Administrator`; decoding the captured payload as UTF-16LE yielded `Write-Output "IR009-Test"`. **Disposition: benign, controlled lab test.** Encoded execution alone is not proof of malware.
 
@@ -52,9 +63,9 @@ The decoded statement only writes a test string to standard output. It contains 
   - [55 — Encoded PowerShell detection](../screenshots/55-IR009-EncodedPowerShell-Detection.png)
   - [56 — Decoded PowerShell evidence](../screenshots/56-IR009-Decoded-PowerShell-Evidence.png)
 
-![IR-009 detection alert](../screenshots/55-IR009-EncodedPowerShell-Detection.png)
+[![IR-009 detection alert](../screenshots/55-IR009-EncodedPowerShell-Detection.png)](../screenshots/55-IR009-EncodedPowerShell-Detection.png)
 
-![IR-009 decoded command evidence](../screenshots/56-IR009-Decoded-PowerShell-Evidence.png)
+[![IR-009 decoded command evidence](../screenshots/56-IR009-Decoded-PowerShell-Evidence.png)](../screenshots/56-IR009-Decoded-PowerShell-Evidence.png)
 - Screenshots observed during the lab showed the structured detection alert, the parent-process fields, and the decoded benign command.
 
 ## Analyst conclusion
