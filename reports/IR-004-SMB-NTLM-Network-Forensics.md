@@ -1,5 +1,16 @@
 # IR-004 | SMB/NTLM Network Authentication Forensics
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** Wireshark packet evidence was used to follow a network connection through its handshake and Windows file-sharing authentication. The capture showed a rejected login followed by a successful session setup; neither alone proves privileged access.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Wireshark, TCP, SMB2, NTLM authentication, packet-level forensics, evidence interpretation.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Environment:** isolated VirtualBox lab · **Source:** Kali Linux `192.168.56.105` · **Target:** DC02 `192.168.56.101` · **Protocol:** TCP/445, SMB2, NTLMSSP · **Classification:** authorized simulation, not a production incident.
 
 ## Executive summary
@@ -42,19 +53,19 @@ Packet 39 contains `NTLMSSP_AUTH (3)`, domain `LAB`, account `socuser`, workstat
 
 ### Screenshot 28 — TCP three-way handshake
 
-![TCP three-way handshake](../screenshots/28-TCP-Three-Way-Handshake.png)
+[![TCP three-way handshake](../screenshots/28-TCP-Three-Way-Handshake.png)](../screenshots/28-TCP-Three-Way-Handshake.png)
 
 Packets 10–12 establish transport connectivity on TCP/445. This does not itself prove successful authentication.
 
 ### Screenshot 29 — Rejected SMB2 session setup
 
-![SMB2 authentication failure](../screenshots/29-SMB2-Authentication-Failure.png)
+[![SMB2 authentication failure](../screenshots/29-SMB2-Authentication-Failure.png)](../screenshots/29-SMB2-Authentication-Failure.png)
 
 Packet 23 is a server response with `STATUS_LOGON_FAILURE`; in this controlled test the operator intentionally entered an incorrect password.
 
 ### Screenshot 30 — Accepted SMB2 session setup
 
-![SMB2 authentication success](../screenshots/30-SMB2-Authentication-Success.png)
+[![SMB2 authentication success](../screenshots/30-SMB2-Authentication-Success.png)](../screenshots/30-SMB2-Authentication-Success.png)
 
 Packet 41 reports `STATUS_SUCCESS`. The associated `smbclient` output listed `ADMIN# IR-004 | SMB/NTLM Network Authentication Forensics
 
