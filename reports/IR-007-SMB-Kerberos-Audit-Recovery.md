@@ -1,5 +1,16 @@
 # IR-007 — SMB Authentication Investigation and Kerberos Audit Recovery
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** The investigation traced an authenticated Windows network connection and then troubleshot why expected Kerberos audit events were missing. The exercise tested audit-policy recovery rather than assuming that missing logs meant no activity.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Windows Event 4624, Kerberos Event 4769, Group Policy, audit configuration, authentication attribution.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Environment:** VirtualBox `lab.local` Active Directory lab  
 **Scope:** Network authentication attribution, Windows auditing, and GPO remediation  
 **Status:** Controlled investigation and telemetry remediation validated
