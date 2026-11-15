@@ -157,6 +157,21 @@ The following screenshots were captured during the controlled IR-015 investigati
 
 ---
 
+## Detection Source Code — New Portfolio Implementation
+
+The following source files are **newly authored reference implementations** of the documented detection approach. They are not claimed to be the exact original Kali VM scripts that generated the historical screenshots.
+
+| Source | Purpose |
+| --- | --- |
+| [Python user-service detector](../scripts/IR-015/user_service_detector.py) | Inspect user-level systemd units and assign a transparent 0–4 heuristic score |
+| [JSON alert exporter](../scripts/IR-015/export_alerts.py) | Capture current findings as structured JSON with UTC collection time |
+| [JSON alert validator](../scripts/IR-015/validate_alerts.py) | Check record structure and optional expected scores |
+| [Benign Bash simulation agent](../scripts/IR-015/agent.sh) | Generate local timestamped activity without a network connection |
+| [Detector unit tests](../scripts/IR-015/test_detector.py) | Fixture-based tests for 4/4, 2/4, 0/4, and absent configuration |
+| [Setup and usage guide](../scripts/IR-015/README.md) | Requirements, commands, assumptions, and limitations |
+
+**Verification status:** The code has been published but has **not yet been executed or independently tested in the original Kali VM**. The unit-test file is provided for reproducible testing; its presence is not a claim that those tests passed. The historical IR-015 screenshot results are separate from this new implementation.
+
 ## Technical Summary & Key Takeaways
 
 **The story in 30 seconds:** I simulated Linux user-service persistence with a harmless timestamp-writing Bash agent. I traced its execution, inspected its systemd configuration and journal events, wrote a Python detector that distinguished the simulated service from a benign comparison, preserved and hashed evidence, disabled and removed the service, and verified the specific persistence mechanism was gone.
