@@ -1,5 +1,16 @@
 # IR-012 — SSH Authentication Failure Detection and Clean-Log Validation
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A Python detector analyzed controlled Secure Shell authentication-failure log entries and was tested against both matching and clean samples.
+
+**Why a security team cares:** The investigation demonstrates evidence-based analysis, a verified outcome, and the distinction between a detection indicator and proof of malicious intent.
+
+**Skills demonstrated:** Linux, Secure Shell (SSH), Python log parsing, positive and negative tests.
+
+**Reader's guide:** Start with the findings below, then inspect the original linked evidence. This is authorized lab activity, not a claim of an actual compromise.
+
+
 **Date:** November 5, 2026  
 **Environment:** Authorized Kali Linux lab, VirtualBox  
 **Status:** Positive and negative test cases completed
@@ -43,19 +54,19 @@ The script does not automatically ingest system journals or accept an arbitrary 
 
 **Screenshot 64 — Controlled SSH authentication evidence.** This records the source material inspected by the detector; the loopback address indicates a local test, not an external attack.
 
-![IR-012 original SSH failure evidence](../screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png)
+[![IR-012 original SSH failure evidence](../screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png)](../screenshots/64-IR012-SSH-Failed-Authentication-Evidence.png)
 
 **Screenshot 65 — Authentication timeline.** Read the log entries in sequence and distinguish authentication messages from connection/session messages before counting attempts.
 
-![IR-012 original SSH authentication timeline](../screenshots/65-IR012-SSH-Authentication-Timeline.png)
+[![IR-012 original SSH authentication timeline](../screenshots/65-IR012-SSH-Authentication-Timeline.png)](../screenshots/65-IR012-SSH-Authentication-Timeline.png)
 
 **Screenshot 66 — Positive detection.** The Python script matched four of five log lines. Because multiple messages can refer to one attempt, four matched lines are not necessarily four failed logins.
 
-![IR-012 original Python detector positive test](../screenshots/66-IR012-SSH-Authentication-Detection.png)
+[![IR-012 original Python detector positive test](../screenshots/66-IR012-SSH-Authentication-Detection.png)](../screenshots/66-IR012-SSH-Authentication-Detection.png)
 
 **Screenshot 67 — Negative control.** Two benign entries produced zero matches. This verifies the behavior on the tested sample, not a production-wide false-positive rate.
 
-![IR-012 original benign-log validation](../screenshots/67-IR012-Clean-Log-Validation.png)
+[![IR-012 original benign-log validation](../screenshots/67-IR012-Clean-Log-Validation.png)](../screenshots/67-IR012-Clean-Log-Validation.png)
 
 ## Why the investigation steps mattered
 
