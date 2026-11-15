@@ -1,5 +1,16 @@
 # IR-014 — Python Network Connection Detection and Containment Verification
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A Python detector examined controlled local TCP connections and associated processes; the test exposed how recently closed connections can produce misleading alerts.
+
+**Why a security team cares:** The investigation demonstrates evidence-based analysis, a verified outcome, and the distinction between a detection indicator and proof of malicious intent.
+
+**Skills demonstrated:** Python, psutil, TCP sockets, process attribution, detection tuning.
+
+**Reader's guide:** Start with the findings below, then inspect the original linked evidence. This is authorized lab activity, not a claim of an actual compromise.
+
+
 **Date:** 2026-11-12  
 **Environment:** Authorized Kali Linux home lab (VirtualBox)  
 **Classification:** Simulated detection-engineering exercise; no confirmed malicious compromise
@@ -38,37 +49,37 @@ The six screenshots below are verified files in the repository's `screenshots/` 
 
 ### 1. Network baseline — Screenshot 69
 
-![IR-014 screenshot 69: network baseline](../screenshots/IR014_69_Network_Baseline.png)
+[![IR-014 screenshot 69: network baseline](../screenshots/IR014_69_Network_Baseline.png)](../screenshots/IR014_69_Network_Baseline.png)
 
 *Baseline: document the observed network state before evaluating the controlled test traffic. A baseline makes later differences easier to interpret.*
 
 ### 2. Listener and process ancestry — Screenshot 70
 
-![IR-014 screenshot 70: listener process ancestry](../screenshots/IR014_70_Listener_Process_Ancestry.png)
+[![IR-014 screenshot 70: listener process ancestry](../screenshots/IR014_70_Listener_Process_Ancestry.png)](../screenshots/IR014_70_Listener_Process_Ancestry.png)
 
 *Listener attribution: connect the observed listening socket to its owning process and parent-process context. Process ancestry helps distinguish an authorized test from unexplained activity.*
 
 ### 3. Process execution context — Screenshot 71
 
-![IR-014 screenshot 71: process execution context](../screenshots/IR014_71_Process_Execution_Context.png)
+[![IR-014 screenshot 71: process execution context](../screenshots/IR014_71_Process_Execution_Context.png)](../screenshots/IR014_71_Process_Execution_Context.png)
 
 *Execution context: inspect the process identity and execution details associated with the lab traffic. A familiar binary name alone does not establish that activity is benign.*
 
 ### 4. HTTP request and log correlation — Screenshot 72
 
-![IR-014 screenshot 72: HTTP request and log correlation](../screenshots/IR014_72_HTTP_Request_Log_Correlation.png)
+[![IR-014 screenshot 72: HTTP request and log correlation](../screenshots/IR014_72_HTTP_Request_Log_Correlation.png)](../screenshots/IR014_72_HTTP_Request_Log_Correlation.png)
 
 *Correlation evidence: relate the captured request/log observations to the investigation timeline. This is contextual evidence; the port-9090 Netcat detector findings should not be misrepresented as proof that an HTTP request was malicious.*
 
 ### 5. Containment verification — Screenshot 73
 
-![IR-014 screenshot 73: containment verification](../screenshots/IR014_73_Containment_Verification.png)
+[![IR-014 screenshot 73: containment verification](../screenshots/IR014_73_Containment_Verification.png)](../screenshots/IR014_73_Containment_Verification.png)
 
 *Post-activity verification: check whether the test activity has ended and distinguish residual TCP state from an actively running connection. In this lab, a transient TIME_WAIT record preceded the later zero-alert scan.*
 
 ### 6. Python network detector — Screenshot 74
 
-![IR-014 screenshot 74: Python network detection](../screenshots/IR014_74_Python_Network_Detection.png)
+[![IR-014 screenshot 74: Python network detection](../screenshots/IR014_74_Python_Network_Detection.png)](../screenshots/IR014_74_Python_Network_Detection.png)
 
 *Detector validation: the custom Python/psutil scan identified port-9090 activity, associated Netcat processes with the observations, and applied the lab-defined MEDIUM triage label. The alert is not evidence of a confirmed compromise.*
 
