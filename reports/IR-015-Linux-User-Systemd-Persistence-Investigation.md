@@ -46,3 +46,73 @@ The original simulated service was no longer found by systemd or the Python pers
 
 ## Scope
 This was an authorized, controlled simulation. No real malware or unauthorized compromise was involved.
+
+## Visual Evidence and Analyst Interpretation
+
+The following screenshots were captured during the controlled IR-015 investigation. Select any image to open its full-size version in GitHub. The captions describe the evidence category; the findings and limitations are documented in the report above.
+
+### Evidence 75 — Process ancestry
+
+[![IR-015 screenshot 75: Process ancestry](../screenshots/IR015_75_Agent_Process_Ancestry.png)](../screenshots/IR015_75_Agent_Process_Ancestry.png)
+
+*Investigative view of the simulated agent's process ancestry. [Open full-size screenshot](../screenshots/IR015_75_Agent_Process_Ancestry.png).*
+
+### Evidence 76 — Execution context
+
+[![IR-015 screenshot 76: Execution context](../screenshots/IR015_76_Process_Execution_Context.png)](../screenshots/IR015_76_Process_Execution_Context.png)
+
+*Process execution context collected during triage. [Open full-size screenshot](../screenshots/IR015_76_Process_Execution_Context.png).*
+
+### Evidence 77 — User-level persistence
+
+[![IR-015 screenshot 77: User-level persistence](../screenshots/IR015_77_User_Systemd_Persistence.png)](../screenshots/IR015_77_User_Systemd_Persistence.png)
+
+*Systemd user-service configuration and persistence verification. [Open full-size screenshot](../screenshots/IR015_77_User_Systemd_Persistence.png).*
+
+### Evidence 78 — Service log correlation
+
+[![IR-015 screenshot 78: Service log correlation](../screenshots/IR015_78_Service_Log_Correlation.png)](../screenshots/IR015_78_Service_Log_Correlation.png)
+
+*Service activity correlated with recorded systemd events. [Open full-size screenshot](../screenshots/IR015_78_Service_Log_Correlation.png).*
+
+### Evidence 79 — Python persistence detection
+
+[![IR-015 screenshot 79: Python persistence detection](../screenshots/IR015_79_Python_Persistence_Detection.png)](../screenshots/IR015_79_Python_Persistence_Detection.png)
+
+*Detector findings for the simulated persistence mechanism. [Open full-size screenshot](../screenshots/IR015_79_Python_Persistence_Detection.png).*
+
+### Evidence 80 — Structured JSON security alerts
+
+[![IR-015 screenshot 80: Structured JSON security alerts](../screenshots/IR015_80_JSON_Security_Alerts.png)](../screenshots/IR015_80_JSON_Security_Alerts.png)
+
+*Exported detection alerts, including benign and simulated-service comparison. [Open full-size screenshot](../screenshots/IR015_80_JSON_Security_Alerts.png).*
+
+### Evidence 81 — Post-containment verification
+
+[![IR-015 screenshot 81: Post-containment verification](../screenshots/IR015_81_Post_Containment_Verification.png)](../screenshots/IR015_81_Post_Containment_Verification.png)
+
+*Verification after disabling and stopping the simulated service. [Open full-size screenshot](../screenshots/IR015_81_Post_Containment_Verification.png).*
+
+### Evidence 82 — Forensic evidence and SHA-256
+
+[![IR-015 screenshot 82: Forensic evidence and SHA-256](../screenshots/IR015_82_Forensic_Evidence_SHA256_Verification.png)](../screenshots/IR015_82_Forensic_Evidence_SHA256_Verification.png)
+
+*Preserved service configuration and integrity-check evidence. [Open full-size screenshot](../screenshots/IR015_82_Forensic_Evidence_SHA256_Verification.png).*
+
+### Evidence 83 — Eradication verification
+
+[![IR-015 screenshot 83: Eradication verification](../screenshots/IR015_83_Final_Eradication_Verification.png)](../screenshots/IR015_83_Final_Eradication_Verification.png)
+
+*Verification that the simulated persistence service was removed. [Open full-size screenshot](../screenshots/IR015_83_Final_Eradication_Verification.png).*
+
+### Evidence 84 — Recovery and detection validation
+
+[![IR-015 screenshot 84: Recovery and detection validation](../screenshots/IR015_84_Recovery_And_Detection_Validation.png)](../screenshots/IR015_84_Recovery_And_Detection_Validation.png)
+
+*Recovery checks and validation of preserved historical alerts. [Open full-size screenshot](../screenshots/IR015_84_Recovery_And_Detection_Validation.png).*
+
+### Evidence 85 — Incident timeline integrity
+
+[![IR-015 screenshot 85: Incident timeline integrity](../screenshots/IR015_85_Incident_Timeline_SHA256.png)](../screenshots/IR015_85_Incident_Timeline_SHA256.png)
+
+*Service timeline and SHA-256 integrity evidence. [Open full-size screenshot](../screenshots/IR015_85_Incident_Timeline_SHA256.png).*
