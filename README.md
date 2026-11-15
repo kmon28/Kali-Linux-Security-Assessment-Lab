@@ -45,16 +45,14 @@
 
 **What is documented:** Reconnaissance and service enumeration; SMB/NTLM and Kerberos analysis; Active Directory membership monitoring; failed/successful authentication correlation; firewall validation; scheduled-task and Linux systemd persistence simulations; Linux SSH and PowerShell discovery investigations. The linked case reports contain the specific evidence and limitations for each exercise.
 
-**How to review:** Start with the [IR-013 illustrated case study](reports/IR-013-Linux-Systemd-Persistence-Investigation.md) to see the investigation → evidence → detection → containment → interview-refresher format. Then use the individual reports linked above for other techniques and the [report quality standard](docs/PORTFOLIO-REPORT-STANDARD.md) for the intended consistent structure.
+**How to review:** Start with the [IR-013 illustrated case study](reports/IR-013-Linux-Systemd-Persistence-Investigation.md) to see the investigation → evidence → detection → containment → interview-refresher format. Then use the individual reports linked above for other techniques.
 
 **Outcome and relevance:** Shows practical SOC triage, log correlation, detection engineering, security validation, and incident documentation. All adversarial behavior described as simulation is controlled lab activity, not a claim of a real-world compromise. Some older reports still need the same modernized inline evidence and refresher treatment.
 
 
-**[Portfolio quality scorecard and improvement roadmap](docs/PORTFOLIO-QUALITY-SCORECARD.md)** — transparent 100-point editorial rubric, current provisional assessment, and the remaining verification work. The score is not an external recruiter or applicant-tracking-system grade.
 
 ### Documentation and technical review
 
-- **[Professional case-study standard](docs/PORTFOLIO-REPORT-STANDARD.md):** consistent evidence-first investigation format, technical rationale, limitations and verified outcomes.
 - **[Technical study guide](docs/TECHNICAL-STUDY-GUIDE.md):** separate active-recall questions, command explanations and preparation notes.
 
 
