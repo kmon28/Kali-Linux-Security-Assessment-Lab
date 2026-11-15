@@ -37,6 +37,9 @@
 
 **Outcome and relevance:** Shows practical SOC triage, log correlation, detection engineering, security validation, and incident documentation. All adversarial behavior described as simulation is controlled lab activity, not a claim of a real-world compromise. Some older reports still need the same modernized inline evidence and refresher treatment.
 
+
+**[Portfolio quality scorecard and improvement roadmap](docs/PORTFOLIO-QUALITY-SCORECARD.md)** — transparent 100-point editorial rubric, current provisional assessment, and the remaining verification work. The score is not an external recruiter or applicant-tracking-system grade.
+
 ### Documentation and technical review
 
 - **[Professional case-study standard](docs/PORTFOLIO-REPORT-STANDARD.md):** consistent evidence-first investigation format, technical rationale, limitations and verified outcomes.
