@@ -106,3 +106,55 @@ RC4 is a legacy Kerberos ticket encryption algorithm. RC4 service tickets can be
 **Verification:** Newer Event 4769 uses AES-256 (`0x12`) and succeeds (`0x0`).  
 **Case outcome:** Hardening validation complete for the scoped service-ticket request; no compromise evidenced.  
 **Future detection work:** Build a parsed-field RC4 rule in a currently accessible SIEM, establish baseline and exclusions, and investigate high-volume or unusual ticket-request patterns using source, identity, and endpoint telemetry.
+
+## Original Screenshot Evidence — Click to Enlarge
+
+These original repository images illustrate the observations described above. Click each screenshot to open the full-size file. Interpret the results using the report's findings and limitations, rather than treating an image alone as proof of compromise.
+
+### Evidence 1 — Kerberos SPN Configuration
+
+[![Original lab screenshot: 11-Kerberos-SPN-Configuration.png](../screenshots/11-Kerberos-SPN-Configuration.png)](../screenshots/11-Kerberos-SPN-Configuration.png)
+
+[Open full-size original screenshot](../screenshots/11-Kerberos-SPN-Configuration.png)
+
+### Evidence 2 — Kerberos Auditing Enabled
+
+[![Original lab screenshot: 12_Kerberos_Auditing_Enabled.png](../screenshots/12_Kerberos_Auditing_Enabled.png)](../screenshots/12_Kerberos_Auditing_Enabled.png)
+
+[Open full-size original screenshot](../screenshots/12_Kerberos_Auditing_Enabled.png)
+
+### Evidence 3 — Kerberos Test Account Configured
+
+[![Original lab screenshot: 13_Kerberos_Test_Account_Configured.png](../screenshots/13_Kerberos_Test_Account_Configured.png)](../screenshots/13_Kerberos_Test_Account_Configured.png)
+
+[Open full-size original screenshot](../screenshots/13_Kerberos_Test_Account_Configured.png)
+
+### Evidence 4 — Kerberos AES256 Ticket Verified
+
+[![Original lab screenshot: 16-Kerberos-AES256-Ticket-Verified.png](../screenshots/16-Kerberos-AES256-Ticket-Verified.png)](../screenshots/16-Kerberos-AES256-Ticket-Verified.png)
+
+[Open full-size original screenshot](../screenshots/16-Kerberos-AES256-Ticket-Verified.png)
+
+### Evidence 5 — Kerberos RC4 Event4769
+
+[![Original lab screenshot: 18-Kerberos-RC4-Event4769.png](../screenshots/18-Kerberos-RC4-Event4769.png)](../screenshots/18-Kerberos-RC4-Event4769.png)
+
+[Open full-size original screenshot](../screenshots/18-Kerberos-RC4-Event4769.png)
+
+### Evidence 6 — Kerberos RC4 Detection
+
+[![Original lab screenshot: 20-Kerberos-RC4-Detection.png](../screenshots/20-Kerberos-RC4-Detection.png)](../screenshots/20-Kerberos-RC4-Detection.png)
+
+[Open full-size original screenshot](../screenshots/20-Kerberos-RC4-Detection.png)
+
+### Evidence 7 — Kerberos RC4 Investigation
+
+[![Original lab screenshot: 22-Kerberos-RC4-Investigation.png](../screenshots/22-Kerberos-RC4-Investigation.png)](../screenshots/22-Kerberos-RC4-Investigation.png)
+
+[Open full-size original screenshot](../screenshots/22-Kerberos-RC4-Investigation.png)
+
+### Evidence 8 — Kerberos AES256 Final Verification
+
+[![Original lab screenshot: 23-Kerberos-AES256-Final-Verification.png](../screenshots/23-Kerberos-AES256-Final-Verification.png)](../screenshots/23-Kerberos-AES256-Final-Verification.png)
+
+[Open full-size original screenshot](../screenshots/23-Kerberos-AES256-Final-Verification.png)
