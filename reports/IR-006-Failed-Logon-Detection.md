@@ -1,5 +1,16 @@
 # IR-006 — PowerShell Failed-Logon Detection Engineering
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** Instead of examining one failed sign-in at a time, this investigation tested a PowerShell rule for multiple failures within five minutes. The historical positive result and a separate later no-alert run are documented distinctly.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** PowerShell detection engineering, Event 4625, threshold logic, alert validation, false-positive awareness.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Environment:** Isolated Windows Server 2022 Active Directory lab  
 **Scope:** Controlled Windows Security Event 4625 analysis and detection testing  
 **Status:** Script execution validated; historical threshold alert observed separately; additional live positive-test validation recommended
