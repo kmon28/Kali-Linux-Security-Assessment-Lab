@@ -1,5 +1,16 @@
 # IR-003 | Investigating Failed SMB Authentication on a Windows Domain Controller
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A controlled incorrect-password test generated failed Windows network sign-ins. The investigation traced the account, source computer, timestamps, and failure codes without treating failed logins as proof of an attack.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Windows Security Event 4625, Active Directory, SMB, incident triage, event timeline and source attribution.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 > **SOC case study · Windows Security Logs · Active Directory · Kali Linux**  
 > **Investigation:** October 18, 2026 · **Environment:** Isolated, authorized VirtualBox lab · **Status:** Closed — expected simulated activity
 
