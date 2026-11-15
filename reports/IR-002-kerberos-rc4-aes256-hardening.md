@@ -1,5 +1,16 @@
 # IR-002 — Kerberos RC4 Service Ticket Investigation and AES-256 Hardening
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A Windows domain service initially received a Kerberos ticket using older RC4 encryption. After changing the test account's encryption settings and requesting a fresh ticket, the observed ticket used AES-256.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Active Directory, Kerberos Event 4769, service-ticket encryption, PowerShell validation, security hardening.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Classification:** Controlled lab security assessment / hardening validation  
 **Environment:** Isolated VirtualBox domain `lab.local`; Windows Server 2022 domain controller DC02  
 **Status:** Closed — tested service-ticket request verified with AES-256  
