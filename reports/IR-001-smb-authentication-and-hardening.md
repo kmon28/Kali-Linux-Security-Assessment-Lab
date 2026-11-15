@@ -61,3 +61,25 @@ The screenshot title identifies a firewall-hardening retest. The observable resu
 ## Outcome / limitations
 **Validated:** failed SMB authentication; corresponding Windows 4625; later TCP/445 filtered result.  
 **Not established:** account compromise, brute force, lateral movement, precise firewall rule, or production impact.
+
+## Original Screenshot Evidence — Click to Enlarge
+
+These original repository images illustrate the observations described above. Click each screenshot to open the full-size file. Interpret the results using the report's findings and limitations, rather than treating an image alone as proof of compromise.
+
+### Evidence 1 — Controlled SMB Authentication Failure
+
+[![Original lab screenshot: 08-Controlled-SMB-Authentication-Failure.png](../screenshots/08-Controlled-SMB-Authentication-Failure.png)](../screenshots/08-Controlled-SMB-Authentication-Failure.png)
+
+[Open full-size original screenshot](../screenshots/08-Controlled-SMB-Authentication-Failure.png)
+
+### Evidence 2 — Windows Event 4625 Investigation
+
+[![Original lab screenshot: 09-Windows-Event-4625-Investigation.png](../screenshots/09-Windows-Event-4625-Investigation.png)](../screenshots/09-Windows-Event-4625-Investigation.png)
+
+[Open full-size original screenshot](../screenshots/09-Windows-Event-4625-Investigation.png)
+
+### Evidence 3 — SMB Firewall Hardening Retest
+
+[![Original lab screenshot: 10-SMB-Firewall-Hardening-Retest.png](../screenshots/10-SMB-Firewall-Hardening-Retest.png)](../screenshots/10-SMB-Firewall-Hardening-Retest.png)
+
+[Open full-size original screenshot](../screenshots/10-SMB-Firewall-Hardening-Retest.png)
