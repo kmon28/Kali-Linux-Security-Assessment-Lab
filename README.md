@@ -1,5 +1,16 @@
 # Kali Linux Security Assessment & Blue-Team Investigation
 
+## Featured Investigations — 60-Second Review
+
+| Case study | What it demonstrates | Open evidence |
+| --- | --- | --- |
+| [IR-004 SMB/NTLM network forensics](reports/IR-004-SMB-NTLM-Network-Forensics.md) | Interpreted packet-level authentication success and failure | [Evidence and findings](reports/IR-004-SMB-NTLM-Network-Forensics.md) |
+| [IR-013 Linux persistence](reports/IR-013-Linux-Systemd-Persistence-Investigation.md) | Compared service baselines and investigated systemd startup behavior | [Illustrated report](reports/IR-013-Linux-Systemd-Persistence-Investigation.md) |
+| [IR-015 user-service persistence](reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) | Analyzed user-level systemd persistence, JSON alerts and cleanup | [Report](reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) · [New reference code](scripts/IR-015/) |
+
+**For technical reviewers:** Open the linked report to examine the observations, limitations, and supporting evidence. These projects document controlled lab activity, not actual production incidents.
+
+
 > **Hands-on security engineering portfolio:** authorized Kali reconnaissance, Active Directory enumeration, SMB security validation, Windows event correlation, and defensive retesting in an isolated VirtualBox lab.
 
 ![Kali Linux](https://img.shields.io/badge/Platform-Kali_Linux-2874A6?style=flat-square)
