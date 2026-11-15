@@ -1,5 +1,16 @@
 # IR-001 — Controlled SMB Authentication Failure & Firewall Retest
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A test computer deliberately attempted an incorrect Windows file-sharing login. The Windows machine recorded the failure, and a later network scan found the file-sharing port filtered.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Windows authentication analysis, source-IP correlation, Security Event 4625, Server Message Block (SMB), network exposure retesting.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Case type:** Authorized lab simulation / blue-team correlation  
 **Systems:** Kali `192.168.56.105` → CLIENT01 `192.168.56.102`  
 **Evidence:** [08 — Kali failed SMB login](../screenshots/08-Controlled-SMB-Authentication-Failure.png) · [09 — Windows 4625](../screenshots/09-Windows-Event-4625-Investigation.png) · [10 — TCP/445 retest](../screenshots/10-SMB-Firewall-Hardening-Retest.png)  
