@@ -1,5 +1,16 @@
 # IR-011 — PowerShell Account Discovery: Sysmon Detection and False-Positive Control
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A custom detector examined PowerShell account and group discovery activity and used a benign control to evaluate false positives.
+
+**Why a security team cares:** The investigation demonstrates evidence-based analysis, a verified outcome, and the distinction between a detection indicator and proof of malicious intent.
+
+**Skills demonstrated:** PowerShell, Sysmon Event 1, detection engineering, false-positive testing.
+
+**Reader's guide:** Start with the findings below, then inspect the original linked evidence. This is authorized lab activity, not a claim of an actual compromise.
+
+
 **Date:** November 3, 2026  
 **Endpoint:** CLIENT01, Windows 10 (`lab.local`)  
 **Scope:** Authorized isolated defensive lab  
@@ -66,15 +77,15 @@ The user reports uploading these screenshots. Exact repository paths and filenam
 
 **61 — Sysmon Event 1 and process ancestry.** Confirms the process, user, parent and command-line context needed for a credible discovery investigation.
 
-![IR-011 Sysmon process ancestry](../screenshots/61-IR011-Sysmon-Process-Ancestry.png)
+[![IR-011 Sysmon process ancestry](../screenshots/61-IR011-Sysmon-Process-Ancestry.png)](../screenshots/61-IR011-Sysmon-Process-Ancestry.png)
 
 **62 — Custom detection alert.** Shows the single medium-severity alert produced by the account-discovery simulation.
 
-![IR-011 account discovery detection](../screenshots/62-IR011-AccountDiscovery-Detection-Alert.png)
+[![IR-011 account discovery detection](../screenshots/62-IR011-AccountDiscovery-Detection-Alert.png)](../screenshots/62-IR011-AccountDiscovery-Detection-Alert.png)
 
 **63 — Benign control validation.** The detector still reported one alert after `Get-Date` / `Write-Output`, indicating no additional alert for that specific control.
 
-![IR-011 benign control](../screenshots/63-IR011-Benign-Control-Validation.png)
+[![IR-011 benign control](../screenshots/63-IR011-Benign-Control-Validation.png)](../screenshots/63-IR011-Benign-Control-Validation.png)
 
 ## Analyst Decisions & Key Takeaways
 
