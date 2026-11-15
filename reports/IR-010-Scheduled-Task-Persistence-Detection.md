@@ -1,5 +1,16 @@
 # IR-010 — Scheduled Task Persistence Simulation and Windows Event Correlation
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A harmless Windows scheduled task simulated automatic execution; the report correlates task evidence with Windows logs and documents cleanup.
+
+**Why a security team cares:** The investigation demonstrates evidence-based analysis, a verified outcome, and the distinction between a detection indicator and proof of malicious intent.
+
+**Skills demonstrated:** Windows Task Scheduler, persistence detection, event correlation, response verification.
+
+**Reader's guide:** Start with the findings below, then inspect the original linked evidence. This is authorized lab activity, not a claim of an actual compromise.
+
+
 **Date:** November 1, 2026  
 **Host:** CLIENT01 (Windows 10, `lab.local`)  
 **Scope:** Authorized, isolated VirtualBox defensive lab  
@@ -84,19 +95,19 @@ The four screenshots below are verified in the repository and linked directly to
 
 **57 — Execution chain.** Task Scheduler Operational events support task start, action launch, action completion, and task completion. Return code zero describes process completion, not maliciousness.
 
-![IR-010 execution event evidence](../screenshots/57-IR010-ScheduledTask-Execution-Events.png)
+[![IR-010 execution event evidence](../screenshots/57-IR010-ScheduledTask-Execution-Events.png)](../screenshots/57-IR010-ScheduledTask-Execution-Events.png)
 
 **58 — Security Event 4698.** Registration telemetry provides a separate source for reviewing the creation of the scheduled task.
 
-![IR-010 task creation Security event](../screenshots/58-IR010-ScheduleTask-Event4698.png)
+[![IR-010 task creation Security event](../screenshots/58-IR010-ScheduleTask-Event4698.png)](../screenshots/58-IR010-ScheduleTask-Event4698.png)
 
 **60 — Task Scheduler Event 106.** The Operational channel independently documents registration.
 
-![IR-010 Task Scheduler registration event](../screenshots/60-IR010-ScheduleTask-Event106.png)
+[![IR-010 Task Scheduler registration event](../screenshots/60-IR010-ScheduleTask-Event106.png)](../screenshots/60-IR010-ScheduleTask-Event106.png)
 
 **59 — Removal verification.** The follow-up lookup produced no matching task after unregistration.
 
-![IR-010 removal verification](../screenshots/59-IR010-Persistence-Removal-Verification.png)
+[![IR-010 removal verification](../screenshots/59-IR010-Persistence-Removal-Verification.png)](../screenshots/59-IR010-Persistence-Removal-Verification.png)
 
 ## Technical Summary & Key Takeaways
 
