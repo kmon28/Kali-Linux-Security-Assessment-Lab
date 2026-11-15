@@ -18,3 +18,13 @@ A short entry point to the controlled Linux and Windows identity investigations.
 5. Verify containment and recovery where performed.
 
 Historical hands-on lab tests count. [IR-015 published reference code](../scripts/IR-015/) was reconstructed later and should not be represented as byte-for-byte original VM code. These are authorized simulations, not production incidents.
+
+## Five-minute hiring-panel review path
+
+1. **SOC triage:** [IR-008 authentication correlation](../reports/IR-008-Failed-to-Successful-Authentication-Correlation.md) — identify failed and successful Windows logons by account, source, and time; distinguish a detected sequence from confirmed compromise.
+2. **Incident response:** [IR-015 user-level persistence](../reports/IR-015-Linux-User-Systemd-Persistence-Investigation.md) — examine the test service, detection scores, journal evidence, hash verification, containment, and removal checks.
+3. **Network investigation:** [IR-004 SMB/NTLM forensics](../reports/IR-004-SMB-NTLM-Network-Forensics.md) — interpret packet outcomes without inferring an attacker from normal protocol fields.
+4. **Security engineering:** [IR-002 Kerberos hardening](../reports/IR-002-kerberos-rc4-aes256-hardening.md) — discuss RC4/AES256 event evidence and control validation.
+5. **Code provenance:** [IR-015 scripts](../scripts/IR-015/) — review the clearly labeled later reference implementation separately from original screenshot evidence.
+
+**Recruitment framing:** This is a hands-on lab portfolio relevant to SOC, security operations, identity security, and junior detection engineering. It does not demonstrate production incident ownership, enterprise-scale deployment, or a guaranteed level of job seniority.
