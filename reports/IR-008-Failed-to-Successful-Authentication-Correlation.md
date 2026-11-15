@@ -1,5 +1,16 @@
 # IR-008 — Cross-Host Authentication Correlation and PowerShell Detection Engineering
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A PowerShell detector looked for three failed Windows network logins followed by a successful login from the same account and source address. The project also documents fixing a silent event-field parsing error.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Windows Events 4625 and 4624, PowerShell correlation, detection debugging, log parsing.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Date:** October 24–25, 2026  
 **Environment:** Isolated VirtualBox Active Directory lab, `lab.local`  
 **Systems:** DC02 (192.168.56.101), CLIENT01 (192.168.56.102)  
