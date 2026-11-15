@@ -1,5 +1,16 @@
 # IR-005 — Active Directory Privileged Group Membership Investigation
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A test account was deliberately added to a powerful Active Directory group and later removed. The investigation examined the Windows audit trail and verified the membership change.
+
+**Why a security team cares:** The investigation practices distinguishing observed evidence from assumptions, documenting the technical outcome, and explaining the limits of the test.
+
+**Skills demonstrated:** Active Directory privileged-group monitoring, Windows Security Events 4728 and 4729, PowerShell, access review.
+
+**How to review:** Read the original findings below, then open the linked evidence to check the observations. This is an authorized lab exercise; do not interpret simulated activity as a real-world compromise.
+
+
 **Status:** Controlled simulation completed; screenshots 36–38 verified in the repository.  
 **Environment:** DC02, Windows Server 2022, `lab.local` (isolated VirtualBox lab).  
 **Tools:** Active Directory PowerShell, Windows Security Event Log, `Get-WinEvent`.  
@@ -37,7 +48,7 @@ Screenshots **32–35** belong to the separate [DC02 firewall validation case st
 
 ### 1. Identify a privileged membership change
 
-![Event 4728 — socuser added to Domain Admins](../screenshots/36-AD-DomainAdmins-Member-Added-4728.png)
+[![Event 4728 — socuser added to Domain Admins](../screenshots/36-AD-DomainAdmins-Member-Added-4728.png)](../screenshots/36-AD-DomainAdmins-Member-Added-4728.png)
 
 
 Windows Security **4728** records the addition of a member to a security-enabled **global** group. Relevant fields include the **Subject** (who made the change), **Member** (who was added), **Group** (which group changed), and timestamp.
@@ -46,14 +57,14 @@ Observed subject: `LAB\Administrator`. Observed member: `socuser`. Observed grou
 
 ### 2. Review the corresponding removal
 
-![Event 4729 — socuser removed from Domain Admins](../screenshots/37-AD-DomainAdmins-Member-Removed-4729.png)
+[![Event 4729 — socuser removed from Domain Admins](../screenshots/37-AD-DomainAdmins-Member-Removed-4729.png)](../screenshots/37-AD-DomainAdmins-Member-Removed-4729.png)
 
 
 Windows Security **4729** records removal of a member from a security-enabled global group. The captured event identifies the same subject, member, and group. Event ordering supports the simulated grant-then-removal sequence.
 
 ### 3. Validate current state
 
-![Verified Domain Admins membership after remediation](../screenshots/38-AD-DomainAdmins-Remediation-Verified.png)
+[![Verified Domain Admins membership after remediation](../screenshots/38-AD-DomainAdmins-Remediation-Verified.png)](../screenshots/38-AD-DomainAdmins-Remediation-Verified.png)
 
 
 ```powershell
