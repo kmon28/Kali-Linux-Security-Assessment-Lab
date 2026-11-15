@@ -1,5 +1,16 @@
 <div align="center">
 
+## Project at a Glance — Plain-English Summary
+
+**What this project is:** A harmless Linux service simulated persistence, with before-and-after service inventories, execution evidence, detection, and cleanup.
+
+**Why a security team cares:** The investigation demonstrates evidence-based analysis, a verified outcome, and the distinction between a detection indicator and proof of malicious intent.
+
+**Skills demonstrated:** Linux systemd, persistence, Python baseline detection, incident response.
+
+**Reader's guide:** Start with the findings below, then inspect the original linked evidence. This is authorized lab activity, not a claim of an actual compromise.
+
+
 # 🛡️ IR-013 | Linux Persistence Investigation
 
 ### 🔎 Detect · 🧪 Investigate · 🛑 Contain · 📋 Document
@@ -32,25 +43,25 @@ The screenshots below are **original uploaded lab evidence**, embedded inline so
 
 Saved systemd unit inventories before and after the simulation were compared. The inventory increased from 287 to 288 entries, with `ir013-agent.service` identified as the added service. A new service is a lead for investigation, not proof of malicious intent.
 
-![IR-013 screenshot 01 — systemd service baseline comparison](../screenshots/IR013_01_Service_Baseline_Comparison.png)
+[![IR-013 screenshot 01 — systemd service baseline comparison](../screenshots/IR013_01_Service_Baseline_Comparison.png)](../screenshots/IR013_01_Service_Baseline_Comparison.png)
 
 ## 2. Investigate the persistence mechanism
 
 The test service was installed under `/etc/systemd/system/` and enabled to model boot-persistent execution. Its `ExecStart` referenced a harmless local Bash script, `~/IR013/simulation/agent.sh`, which wrote a timestamp to `/tmp/ir013-agent.log`. This demonstrates the mechanism without deploying malware.
 
-![IR-013 screenshot 02 — systemd service persistence configuration](../screenshots/IR013_02_Systemd_Service_Persistence.png)
+[![IR-013 screenshot 02 — systemd service persistence configuration](../screenshots/IR013_02_Systemd_Service_Persistence.png)](../screenshots/IR013_02_Systemd_Service_Persistence.png)
 
 ## 3. Record file integrity evidence
 
 The investigation captured a SHA-256 hash for the simulated agent and reviewed file metadata. A hash is useful for tracking a specific file's content and comparing copies; it does not, on its own, determine whether a file is malicious.
 
-![IR-013 screenshot 03 — SHA-256 evidence](../screenshots/IR013_03_Agent_SHA256_Evidence.png)
+[![IR-013 screenshot 03 — SHA-256 evidence](../screenshots/IR013_03_Agent_SHA256_Evidence.png)](../screenshots/IR013_03_Agent_SHA256_Evidence.png)
 
 ## 4. Reconstruct the execution timeline
 
 Systemd journal evidence and the script's timestamped output supported a timeline of simulated execution. Journal records provide context for service starts and stops, but interpretation still requires configuration and process evidence.
 
-![IR-013 screenshot 04 — agent execution timeline](../screenshots/IR013_04_Agent_Execution_Timeline.png)
+[![IR-013 screenshot 04 — agent execution timeline](../screenshots/IR013_04_Agent_Execution_Timeline.png)](../screenshots/IR013_04_Agent_Execution_Timeline.png)
 
 ## 5. Detection engineering
 
@@ -62,13 +73,13 @@ A Python comparison of the saved before-and-after service inventories produced:
 
 The detector performs **snapshot comparison**, not continuous monitoring, and would require enrichment and allowlisting in a production environment. The original detection-alert screenshot is embedded below, showing the detector's output during the controlled test.
 
-![IR-013 screenshot 05 — Python service detection alert](../screenshots/IR013_05_Python_Service_Detection_Alert.png)
+[![IR-013 screenshot 05 — Python service detection alert](../screenshots/IR013_05_Python_Service_Detection_Alert.png)](../screenshots/IR013_05_Python_Service_Detection_Alert.png)
 
 ## 6. Containment and verification
 
 The simulated service was disabled and stopped with `systemctl disable --now`, its unit file was removed, and systemd configuration was reloaded. Follow-up checks showed `systemctl is-enabled ir013-agent.service` returning `not-found`, no matching persistence unit paths, and no unexpected listeners attributable to this simulation. The benign script was intentionally retained as lab material.
 
-![IR-013 screenshot 06 — containment verification](../screenshots/IR013_06_Containment_Verification.png)
+[![IR-013 screenshot 06 — containment verification](../screenshots/IR013_06_Containment_Verification.png)](../screenshots/IR013_06_Containment_Verification.png)
 
 ## Findings and limitations
 
