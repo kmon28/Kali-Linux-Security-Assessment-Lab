@@ -55,6 +55,52 @@ Times as displayed on the lab endpoint; offset not independently verified.
 
 The timeline was exported locally as `C:\IR016\Incident-Timeline.csv`. The raw CSV has not been verified as published; review sensitive fields before sharing. Screenshots document the investigation.
 
+
+## Reproducible analyst workflow
+
+The following timeline and export queries were used in the lab. They target the test executable only; the encoded PowerShell exercise is a separate observation.
+
+```powershell
+Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational';Id=1,11;StartTime='2026-11-15'} | Where-Object {$_.Message -match 'IR016-Test\.exe'} | Sort-Object TimeCreated | Select-Object TimeCreated,Id,RecordId | Format-Table -AutoSize
+```
+
+Expected historical result: one file creation and two process creation records, as shown in the timeline above. The name-based filter is scoped to this exercise, not a general detection rule.
+
+```powershell
+Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Sysmon/Operational';Id=1,11;StartTime='2026-11-15'} | Where-Object {$_.Message -match 'IR016-Test\.exe'} | Sort-Object TimeCreated | Select-Object TimeCreated,Id,RecordId,Message | Export-Csv 'C:\IR016\Incident-Timeline.csv' -NoTypeInformation
+Get-Item 'C:\IR016\Incident-Timeline.csv'
+```
+
+The export preserves event messages and record identifiers; it is a derived CSV, not a native EVTX acquisition. File existence alone does not validate every exported row.
+
+## Analyst decision matrix
+
+| Investigation signal | Interpretation | Decision |
+| --- | --- | --- |
+| PowerShell launches renamed executable | Triage lead, not proof of malicious activity | Review parent, user, command line and file identity |
+| Original filename differs from disk name | Possible legitimate copy or masquerading | Compare trusted baseline and authorization |
+| Hash matches local Notepad; signature valid | Supports identity at collection time | Continue behavioral review; do not automatically allow |
+| Unexpected network activity or child process | Potential escalation indicator if corroborated | Investigate destination, process ancestry and scope |
+| Missing script or network telemetry | Visibility limitation | Record gap and seek independent evidence |
+
+These are proposed analyst triage criteria, not a deployed or validated automated rule. Legitimate administration, software packaging and QA testing can produce similar indicators. A real incident with unresolved authorization, suspicious behavior, or corroborated compromise indicators should be escalated according to organizational policy. Preserve evidence before approved containment; no production response is claimed here.
+
+## Telemetry gap and validation plan
+
+Sysmon process creation captured the encoded PowerShell launch, but the matching 4104 event was not recovered. This does not show that the command failed or that logging was disabled. Follow-up validation would check the effective script-block logging policy, channel availability and retention, query time boundaries, and whether a new harmless control produces a matching event. These follow-up checks are recommendations, not completed tests. Network and termination searches likewise did not establish whether all relevant activity was captured.
+
+## Reviewer acceptance checks
+
+| Check | Status |
+| --- | --- |
+| Historical file creation and two executions | Observed; record IDs 111070, 111071, 111953 |
+| File identity | Matching SHA-256 and valid Authenticode reported |
+| Script-content correlation | Incomplete; explicitly documented |
+| Evidence export | Local export reported complete; raw CSV publication unverified |
+| Automated detection accuracy | Not evaluated in this exercise |
+| Incident closure | Authorized test disposition only; cleanup not verified |
+
+
 ## Incident Classification
 
 Benign, authorized simulation. File identity, observed behavior and known lab authorization jointly support this disposition. A valid signature alone does not establish safe behavior. Missing events do not establish absence of activity. No containment or eradication action is claimed.
@@ -65,13 +111,13 @@ Benign, authorized simulation. File identity, observed behavior and known lab au
 
 [![IR-016 Sysmon baseline](../screenshots/IR016-1-Windows-Sysmon-Baseline.png)](../screenshots/IR016-1-Windows-Sysmon-Baseline.png)
 
-**Why it matters:** Establish available endpoint telemetry.
+**Why it matters:** Establish available endpoint telemetry before interpreting missing events.
 
 ### Evidence 2 — Process ancestry
 
 [![IR-016 Process ancestry](../screenshots/IR016-2-PowerShell-Parent-Process-Investigation.png)](../screenshots/IR016-2-PowerShell-Parent-Process-Investigation.png)
 
-**Why it matters:** Trace the launcher and execution context.
+**Why it matters:** Trace the launcher and execution context. An earlier PowerShell investigation identified RuntimeBroker as parent; that observation is separate from the later controlled test.
 
 ### Evidence 3 — Script-block logging
 
@@ -95,13 +141,13 @@ Benign, authorized simulation. File identity, observed behavior and known lab au
 
 [![IR-016 File execution](../screenshots/IR016-FIle-Execution-Detection.png)](../screenshots/IR016-FIle-Execution-Detection.png)
 
-**Why it matters:** Event 1 confirms the renamed test executable started.
+**Why it matters:** Event 1 confirms process creation for the renamed test executable; the November 17 launch was PID 4408, parent PowerShell PID 6128, under LAB\\Administrator.
 
 ### Evidence 7 — File creation
 
 [![IR-016 File creation](../screenshots/IR016-7-File-Creation-Correlation.png)](../screenshots/IR016-7-File-Creation-Correlation.png)
 
-**Why it matters:** Event 11 records creation at the matching path.
+**Why it matters:** Event 11 records creation at the matching path on November 15 at 22:55:29 (record 111070).
 
 ### Evidence 8 — Hash comparison
 
@@ -119,7 +165,7 @@ Benign, authorized simulation. File identity, observed behavior and known lab au
 
 [![IR-016 Incident timeline](../screenshots/IR016-10-Incident-Timeline.png)](../screenshots/IR016-10-Incident-Timeline.png)
 
-**Why it matters:** Chronological correlation of file creation and execution.
+**Why it matters:** Chronological correlation: creation at 22:55:29, first execution at 22:57:03, and second execution on November 17 at 15:21:04.
 
 ### Evidence 11 — Evidence export
 
