@@ -317,3 +317,9 @@ All activity shown was performed against controlled lab hosts. Screenshots are t
 **Evidence (verified files):** [01 — Service baseline comparison](screenshots/IR013_01_Service_Baseline_Comparison.png) · [02 — Systemd persistence](screenshots/IR013_02_Systemd_Service_Persistence.png) · [03 — SHA-256](screenshots/IR013_03_Agent_SHA256_Evidence.png) · [04 — Execution timeline](screenshots/IR013_04_Agent_Execution_Timeline.png) · [06 — Containment verification](screenshots/IR013_06_Containment_Verification.png) · [Browse remaining IR-013 images](screenshots/).
 
 **Portfolio note:** The IR-013 screenshots are uploaded in the shared `screenshots/` directory. An illustrated incident report is now published. The original locally prepared Python detector, raw inventory files, and longer report have not yet been verified as uploaded; links to those source artifacts are intentionally omitted.
+
+## IR-016 — Windows Endpoint Execution and File Identity Investigation
+
+**Completed November 17, 2026.** Investigated controlled encoded PowerShell execution and a renamed Notepad executable on CLIENT01. Correlated Sysmon Events 1 and 11, verified SHA-256 and Authenticode, reconstructed the incident timeline and exported evidence locally. No matching Event 4104, network or termination records were recovered for the respective searches; this was a benign authorized simulation.
+
+**[Read the illustrated IR-016 incident report](reports/IR-016-Windows-Endpoint-Execution-Investigation.md)** · [Incident timeline](screenshots/IR016-10-Incident-Timeline.png) · [Evidence export](screenshots/IR016-11-Evidence-Export.png)
