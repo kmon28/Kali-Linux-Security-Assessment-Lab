@@ -323,3 +323,9 @@ All activity shown was performed against controlled lab hosts. Screenshots are t
 **Completed November 17, 2026.** Investigated controlled encoded PowerShell execution and a renamed Notepad executable on CLIENT01. Correlated Sysmon Events 1 and 11, verified SHA-256 and Authenticode, reconstructed the incident timeline and exported evidence locally. No matching Event 4104, network or termination records were recovered for the respective searches; this was a benign authorized simulation.
 
 **[Read the illustrated IR-016 incident report](reports/IR-016-Windows-Endpoint-Execution-Investigation.md)** · [Incident timeline](screenshots/IR016-10-Incident-Timeline.png) · [Evidence export](screenshots/IR016-11-Evidence-Export.png)
+
+## IR-017 — Windows Malware Detection, Remediation and PowerShell Threat Hunting
+
+Investigated two independent authorized exercises on CLIENT01: Defender EICAR detection and reported successful quarantine, and retrospective encoded PowerShell analysis. Correlated Sysmon process and file events by ProcessGuid, assessed missing telemetry, reconstructed two timelines and verified exported evidence hashes across sessions. No live malware or actual compromise established.
+
+**[Read the illustrated IR-017 incident report](reports/IR-017-Windows-Malware-Detection-and-PowerShell-Threat-Hunting.md)** · [Remediation confirmation](screenshots/IR017-21-Defender-Remediation-Confirmation.png) · [Decoded command](screenshots/IR017-13-Decoded-PowerShell-Command.png) · [Final integrity verification](screenshots/IR017-23-Final-Evidence-Integrity-Verification.png)
